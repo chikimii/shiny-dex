@@ -10,16 +10,14 @@
   body {
     font-family: 'VT323', monospace;
     background: #111;
-    margin: 0 auto;
-    padding: 2rem 1.5rem;
-    max-width: 960px;
+    margin: 0;
     color: #eee;
     user-select: none;
   }
 
   header {
     background: linear-gradient(90deg, #b71c1c, #ff5252);
-    border-radius: 12px;
+    border-radius: 0 0 12px 12px;
     padding: 1.8rem 2rem;
     text-align: center;
     font-size: 3rem;
@@ -27,37 +25,66 @@
     letter-spacing: 0.15em;
     color: #fff;
     text-shadow: 0 0 15px #ff5252;
-    margin-bottom: 2.5rem;
     user-select: none;
+    margin-bottom: 1rem;
   }
 
+  /* Wide container with left and right panels */
   main {
-    max-width: 960px;
-    margin: 0 auto;
+    max-width: 1400px;
+    margin: 0 auto 3rem;
+    display: flex;
+    gap: 2.5rem;
+    padding: 0 1.5rem;
+  }
+
+  /* Left panel: gallery and trainer sections */
+  #left-panel {
+    flex: 2 1 0;
+    background: #1a1a1a;
+    border-radius: 16px;
+    padding: 2rem 2.5rem 2.5rem;
+    box-shadow:
+      0 4px 10px rgba(255, 82, 82, 0.35),
+      inset 0 0 25px #330000;
+    overflow-y: auto;
+    max-height: 80vh;
   }
 
   section {
     margin-bottom: 3rem;
-    background: #1a1a1a;
-    border-radius: 16px;
-    padding: 1.5rem 2rem 2rem;
-    box-shadow:
-      0 4px 10px rgba(255, 82, 82, 0.3),
-      inset 0 0 25px #330000;
   }
 
-  section h2 {
-    font-size: 2rem;
-    margin-bottom: 1.2rem;
+  /* Trainer header with name and model */
+  .trainer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.6rem;
+    user-select: text;
+  }
+
+  .trainer-header h2 {
+    font-size: 2.2rem;
     font-weight: 700;
     color: #ff5252;
     text-transform: uppercase;
     letter-spacing: 0.12em;
     border-bottom: 3px solid #b71c1c;
     padding-bottom: 0.3rem;
-    user-select: text;
+    margin: 0;
   }
 
+  .trainer-model {
+    width: 64px;
+    height: 96px;
+    image-rendering: pixelated;
+    border: 2px solid #b71c1c;
+    border-radius: 8px;
+    box-shadow: 0 0 12px #ff5252;
+  }
+
+  /* Gallery grid */
   .gallery {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -127,98 +154,87 @@
     user-select: text;
   }
 
-  /* Modal styles */
-  .modal {
-    position: fixed;
-    display: none;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(17, 17, 17, 0.95);
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    padding: 1rem;
-  }
-  .modal-content {
-    background: #2a0d0d;
-    border: 4px solid #ff5252;
-    border-radius: 24px;
-    padding: 2.5rem 3rem 3rem;
-    max-width: 400px;
-    width: 100%;
-    text-align: center;
+  /* Right info panel */
+  #right-panel {
+    flex: 1 1 0;
+    background: #1a1a1a;
+    border-radius: 16px;
+    padding: 2rem 2rem 2.5rem;
     box-shadow:
-      0 12px 28px rgba(255, 82, 82, 0.8);
+      0 4px 12px rgba(255, 82, 82, 0.35),
+      inset 0 0 25px #330000;
     color: #ffbaba;
-    position: relative;
     user-select: text;
+    max-height: 80vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
-  .close-btn {
-    position: absolute;
-    top: 1rem;
-    right: 1.2rem;
-    font-size: 2.4rem;
-    font-weight: 700;
-    color: #ff7a7a;
-    cursor: pointer;
-    user-select: none;
-    transition: color 0.25s ease;
+
+  #infoSprite {
+    width: 144px;
+    height: 144px;
+    image-rendering: pixelated;
+    margin-bottom: 1.5rem;
+    filter: drop-shadow(0 0 10px #ff5252);
   }
-  .close-btn:hover {
-    color: #ff5252;
-  }
-  .modal-pokemon-name {
+
+  #infoName {
     font-family: 'VT323', monospace;
-    font-size: 2.6rem;
+    font-size: 2.8rem;
     font-weight: 700;
-    margin-bottom: 0.5rem;
     color: #ff5252;
     text-transform: capitalize;
+    margin-bottom: 0.3rem;
   }
-  .modal-pokemon-number {
+  #infoNumber {
     font-family: monospace;
-    color: #ff8a80;
-    margin-bottom: 1.5rem;
     font-weight: 700;
     letter-spacing: 0.15em;
-    font-size: 1.3rem;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #ff8a80;
   }
-  .modal-info {
-    font-size: 1.2rem;
-    line-height: 1.4;
+
+  #infoTrainer {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
     font-weight: 600;
   }
-  #modalSprite {
-    width: 128px;
-    height: 128px;
-    image-rendering: pixelated;
-    margin-bottom: 2rem;
-    user-select: none;
-    filter: drop-shadow(0 0 8px #ff5252);
+
+  #infoDesc {
+    font-size: 1.1rem;
+    line-height: 1.4;
+    max-width: 300px;
   }
 
   /* Responsive */
-  @media (max-width: 480px) {
-    header {
-      font-size: 2.3rem;
-      padding: 1.2rem 1rem;
+  @media (max-width: 1200px) {
+    main {
+      flex-direction: column;
+      max-width: 600px;
+      margin-bottom: 3rem;
     }
-    section {
-      padding: 1.2rem 1.2rem 1.5rem;
+    #left-panel, #right-panel {
+      max-height: none;
+      flex: none;
+      width: 100%;
+      padding: 1.5rem 1.2rem 1.8rem;
+      margin-bottom: 2rem;
+      box-shadow:
+        0 3px 8px rgba(255, 82, 82, 0.25),
+        inset 0 0 20px #330000;
     }
-    .gallery {
-      grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
-      gap: 1.5rem 1.8rem;
+    #right-panel {
+      text-align: center;
+      align-items: center;
     }
-    .sprite {
-      width: 72px;
-      height: 72px;
-    }
-    #modalSprite {
-      width: 96px;
-      height: 96px;
-      margin-bottom: 1.5rem;
+    #infoDesc {
+      max-width: 100%;
     }
   }
+
 </style>
 </head>
 <body>
@@ -226,28 +242,37 @@
 <header>POKÉMMO SHINY DEX</header>
 
 <main>
-  <section>
-    <h2>Tuna</h2>
-    <div class="gallery" id="gallery-tuna" tabindex="0"></div>
-  </section>
+  <div id="left-panel">
+    <section>
+      <div class="trainer-header">
+        <h2>Tuna</h2>
+        <img class="trainer-model" src="https://archives.pokemmo.eu/images/avatarMale_3.png" alt="Tuna's in-game character" />
+      </div>
+      <div class="gallery" id="gallery-tuna" tabindex="0"></div>
+    </section>
 
-  <section>
-    <h2>chels</h2>
-    <div class="gallery" id="gallery-chels" tabindex="0"></div>
-  </section>
+    <section>
+      <div class="trainer-header">
+        <h2>chels</h2>
+        <img class="trainer-model" src="https://archives.pokemmo.eu/images/avatarFemale_14.png" alt="chels's in-game character" />
+      </div>
+      <div class="gallery" id="gallery-chels" tabindex="0"></div>
+    </section>
+  </div>
+
+  <aside id="right-panel" aria-live="polite" aria-atomic="true" aria-relevant="additions removals">
+    <img id="infoSprite" src="https://img.pokemondb.net/sprites/black-white/anim/shiny/octillery.gif" alt="Octillery shiny sprite" />
+    <div id="infoName">Octillery</div>
+    <div id="infoNumber">#224</div>
+    <div id="infoTrainer">Trainer: Tuna</div>
+    <div id="infoDesc">
+      A skilled and precise Pokémon, Octillery uses its suction-cup tentacles to hold tight to opponents. Shiny Octillery gleams in a vibrant red hue!
+    </div>
+  </aside>
 </main>
 
-<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalName">
-  <div class="modal-content">
-    <span class="close-btn" id="closeBtn" aria-label="Close">&times;</span>
-    <div class="modal-pokemon-name" id="modalName"></div>
-    <div class="modal-pokemon-number" id="modalNumber"></div>
-    <img src="" alt="" id="modalSprite" />
-    <div class="modal-info" id="modalInfo"></div>
-  </div>
-</div>
-
 <script>
+  // Dex numbers
   const dexNumbers = {
     octillery: 224,
     joltik: 595,
@@ -265,6 +290,25 @@
     magikarp: 129
   };
 
+  // Short descriptions for info panel
+  const dexDescriptions = {
+    octillery: "A skilled and precise Pokémon, Octillery uses its suction-cup tentacles to hold tight to opponents. Shiny Octillery gleams in a vibrant red hue!",
+    joltik: "A tiny Electric/Bug type, Joltik is fast and energetic. Its shiny form has a cool light yellow color.",
+    aggron: "A sturdy Steel/Rock type with heavy armor. The shiny Aggron shows a striking silver shade.",
+    haxorus: "A Dragon type known for its sharp axe-like tusks. Shiny Haxorus is colored a rich golden tone.",
+    whirlipede: "A Bug/Poison Pokémon that rolls into a spiked ball for defense. Its shiny form shines with pale green hues.",
+    scolipede: "The evolved form of Whirlipede, Scolipede is fast and powerful. Its shiny colors shift to lighter purples and greens.",
+    lilligant: "A graceful Grass type known for its beauty. The shiny Lilligant has bright red petals that stand out.",
+    psyduck: "A Water type Pokémon that often suffers headaches. The shiny Psyduck is more yellowish and vibrant.",
+    golurk: "A Ghost/Ground type golem that protects ancient ruins. Its shiny form has a slightly different green tint.",
+    dusclops: "A Ghost type Pokémon with a mysterious aura. The shiny Dusclops has a lighter purple body tone.",
+    weezing: "A Poison type Pokémon that emits toxic gases. The shiny Weezing has a lighter lavender color.",
+    girafarig: "A Normal/Psychic type with two heads. The shiny Girafarig features a more golden yellow coat.",
+    mankey: "A small Fighting type Pokémon known for its anger. The shiny Mankey has a paler fur color.",
+    magikarp: "A weak but iconic Water type. The shiny Magikarp is bright golden-orange."
+  };
+
+  // Trainers and their shinies
   const trainers = {
     Tuna: [
       'octillery', 'joltik', 'aggron', 'haxorus', 'whirlipede', 'scolipede', 'lilligant', 'psyduck', 'golurk', 'dusclops', 'weezing'
@@ -277,12 +321,12 @@
   const galleryTuna = document.getElementById('gallery-tuna');
   const galleryChels = document.getElementById('gallery-chels');
 
-  const modal = document.getElementById('modal');
-  const modalName = document.getElementById('modalName');
-  const modalNumber = document.getElementById('modalNumber');
-  const modalInfo = document.getElementById('modalInfo');
-  const modalSprite = document.getElementById('modalSprite');
-  const closeBtn = document.getElementById('closeBtn');
+  // Info panel elements
+  const infoSprite = document.getElementById('infoSprite');
+  const infoName = document.getElementById('infoName');
+  const infoNumber = document.getElementById('infoNumber');
+  const infoTrainer = document.getElementById('infoTrainer');
+  const infoDesc = document.getElementById('infoDesc');
 
   function createCard(pokemonName, trainerName) {
     const lowerName = pokemonName.toLowerCase();
@@ -297,50 +341,28 @@
       <div class="pokemon-name">${pokemonName}</div>
       <div class="trainer-label">Trainer: ${trainerName}</div>
     `;
-    card.addEventListener('click', () => openModal(pokemonName, number, spriteUrl, trainerName));
-    card.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        openModal(pokemonName, number, spriteUrl, trainerName);
-      }
-    });
+
+    function updateInfoPanel() {
+      infoName.textContent = pokemonName.charAt(0).toUpperCase() + pokemonName.slice(1);
+      infoNumber.textContent = `#${String(number).padStart(3, '0')}`;
+      infoSprite.src = spriteUrl;
+      infoSprite.alt = `${pokemonName} shiny sprite`;
+      infoTrainer.textContent = `Trainer: ${trainerName}`;
+      infoDesc.textContent = dexDescriptions[lowerName] || "No description available.";
+    }
+
+    card.addEventListener('mouseenter', updateInfoPanel);
+    card.addEventListener('focus', updateInfoPanel);
+
     return card;
   }
 
-  function openModal(name, number, spriteUrl, trainer) {
-    modalName.textContent = name.charAt(0).toUpperCase() + name.slice(1);
-    modalNumber.textContent = `#${String(number).padStart(3, '0')}`;
-    modalSprite.src = spriteUrl;
-    modalSprite.alt = `${name} shiny sprite`;
-    modalInfo.textContent = `Trainer: ${trainer}`;
-    modal.style.display = 'flex';
-    closeBtn.focus();
-  }
-
-  function closeModal() {
-    modal.style.display = 'none';
-  }
-
+  // Populate galleries
   trainers.Tuna.forEach(p => {
     galleryTuna.appendChild(createCard(p, 'Tuna'));
   });
-
   trainers.chels.forEach(p => {
     galleryChels.appendChild(createCard(p, 'chels'));
-  });
-
-  closeBtn.addEventListener('click', closeModal);
-
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) {
-      closeModal();
-    }
-  });
-
-  window.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && modal.style.display === 'flex') {
-      closeModal();
-    }
   });
 </script>
 
