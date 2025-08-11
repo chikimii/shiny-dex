@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>My PokeMMO Shiny Dex</title>
+<title>PokeMMO Shiny Dex</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
 
@@ -148,7 +148,7 @@
 </head>
 <body>
 
-<header>MY POKÉMMO SHINY DEX</header>
+<header>POKÉMMO SHINY DEX</header>
 
 <section>
   <h2>Tuna</h2>
@@ -188,10 +188,7 @@
     magikarp: 129
   };
 
-  const customSprites = {
-    lilligant: 'https://raw.githubusercontent.com/veekun/pokedex/master/pokedex/media/sprites/black-white/shiny/lilligant.png'
-  };
-
+  // Note: spelling fix here - 'lilligant' with two Ls!
   const trainers = {
     Tuna: [
       'octillery', 'joltik', 'aggron', 'haxorus', 'whirlipede', 'scolipede', 'lilligant', 'psyduck', 'golurk', 'duskclops', 'weezing'
@@ -214,7 +211,7 @@
   function createCard(pokemonName, trainerName) {
     const lowerName = pokemonName.toLowerCase();
     const number = dexNumbers[lowerName];
-    const spriteUrl = customSprites[lowerName] || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/${number}.png`;
+    const spriteUrl = `https://img.pokemondb.net/sprites/black-white/anim/shiny/${lowerName}.gif`;
     const card = document.createElement('div');
     card.className = 'pokemon-card';
     card.setAttribute('tabindex', '0');
