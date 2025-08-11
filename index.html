@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>PokeMMO Shiny Dex</title>
 <style>
-  /* Pokédex colors & fonts */
   @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
 
   body {
@@ -149,7 +148,7 @@
 </head>
 <body>
 
-<header>MY POKÉMMO SHINY DEX</header>
+<header>POKÉMMO SHINY DEX</header>
 
 <section>
   <h2>Tuna</h2>
@@ -189,6 +188,11 @@
     magikarp: 129
   };
 
+  // Custom sprites URLs for Pokémon with missing or incorrect default sprites
+  const customSprites = {
+    liligant: 'https://veekun.com/dex/media/sprites/black-white/shiny/lilligant.png'
+  };
+
   const trainers = {
     Tuna: [
       'octillery', 'joltik', 'aggron', 'haxorus', 'whirlipede', 'scolipede', 'liligant', 'psyduck', 'golurk', 'duskclops', 'weezing'
@@ -210,7 +214,8 @@
 
   function createCard(pokemonName, trainerName) {
     const number = dexNumbers[pokemonName];
-    const spriteUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/${number}.png`;
+    // Use custom sprite if available, else default shiny sprite
+    const spriteUrl = customSprites[pokemonName] || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/${number}.png`;
     const card = document.createElement('div');
     card.className = 'pokemon-card';
     card.setAttribute('tabindex', '0');
@@ -260,7 +265,6 @@
     }
   });
 
-  // Close modal on ESC key
   window.addEventListener('keydown', e => {
     if (e.key === 'Escape' && modal.style.display === 'flex') {
       closeModal();
