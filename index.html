@@ -10,7 +10,9 @@
   body {
     font-family: 'VT323', monospace, monospace;
     background: #111;
-    margin: 0; padding: 0;
+    margin: 0 auto;
+    padding: 1rem;
+    max-width: 960px;
     color: #eee;
   }
 
@@ -18,78 +20,86 @@
     background: #d32f2f;
     color: white;
     text-align: center;
-    font-size: 2rem;
+    font-size: 2.5rem;
     font-weight: 700;
-    padding: 1rem 0;
+    padding: 1.5rem 0;
     letter-spacing: 0.1em;
-    text-shadow: 0 0 10px #ff5252;
+    text-shadow: 0 0 12px #ff5252;
     border-bottom: 4px solid #b71c1c;
+    border-radius: 8px;
+    margin-bottom: 1rem;
   }
 
   section {
-    margin: 1rem;
+    margin: 1rem 0;
   }
 
   section h2 {
     color: #ff5252;
     font-weight: 700;
     text-transform: uppercase;
-    margin-bottom: 0.5rem;
-    border-bottom: 2px solid #ff5252;
-    padding-bottom: 0.3rem;
+    margin-bottom: 0.75rem;
+    border-bottom: 3px solid #ff5252;
+    padding-bottom: 0.4rem;
+    font-size: 1.6rem;
   }
 
   .gallery {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
-    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+    gap: 1.5rem;
   }
 
   .pokemon-card {
     background: #222;
     border-radius: 12px;
     box-shadow:
-      0 0 8px #ff5252,
-      inset 0 0 15px #ff1744;
-    padding: 0.6rem 0.4rem;
+      0 0 12px #ff5252,
+      inset 0 0 20px #ff1744;
+    padding: 0.8rem 0.6rem;
     text-align: center;
     cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
   }
   .pokemon-card:hover,
   .pokemon-card:focus {
-    transform: scale(1.1);
+    transform: scale(1.15);
     box-shadow:
-      0 0 12px #ff5252,
-      inset 0 0 18px #ff1744;
+      0 0 20px #ff5252,
+      inset 0 0 28px #ff1744;
+    outline: none;
   }
 
   .pokemon-number {
-    font-size: 0.75rem;
+    font-size: 0.85rem;
     color: #ff8a80;
     font-weight: 700;
     letter-spacing: 0.1em;
   }
+
   .pokemon-name {
-    margin-top: 0.4rem;
+    margin-top: 0.5rem;
     font-weight: 700;
-    font-size: 1.1rem;
+    font-size: 1.3rem;
     color: #ff5252;
     text-transform: capitalize;
   }
+
   .sprite {
-    width: 72px;
-    height: 72px;
+    width: 96px;
+    height: 96px;
     image-rendering: pixelated;
+    margin: 0 auto;
   }
+
   .trainer-label {
-    font-size: 0.65rem;
+    font-size: 0.75rem;
     color: #ff8a80;
-    margin-top: 0.2rem;
+    margin-top: 0.3rem;
     font-weight: 600;
   }
 
-  /* Modal */
+  /* Modal styles */
   .modal {
     position: fixed;
     display: none;
@@ -103,14 +113,15 @@
     background: #222;
     border: 3px solid #ff5252;
     border-radius: 20px;
-    padding: 1.5rem;
-    max-width: 320px;
+    padding: 2rem;
+    max-width: 360px;
     width: 90%;
     text-align: center;
     box-shadow:
-      0 0 12px #ff5252;
+      0 0 16px #ff5252;
     color: #ff8a80;
     white-space: pre-line;
+    position: relative;
   }
   .close-btn {
     position: absolute;
@@ -122,9 +133,9 @@
     cursor: pointer;
   }
   .modal-pokemon-name {
-    font-size: 1.8rem;
+    font-size: 2rem;
     font-weight: 700;
-    margin-bottom: 0.2rem;
+    margin-bottom: 0.4rem;
     color: #ff5252;
     text-transform: capitalize;
   }
@@ -135,14 +146,25 @@
     letter-spacing: 0.1em;
   }
   .modal-info {
-    font-size: 1rem;
-    line-height: 1.3;
+    font-size: 1.1rem;
+    line-height: 1.4;
   }
   #modalSprite {
-    width: 96px;
-    height: 96px;
+    width: 120px;
+    height: 120px;
     image-rendering: pixelated;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  /* Responsive tweaks */
+  @media (max-width: 400px) {
+    .gallery {
+      grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    }
+    .sprite {
+      width: 64px;
+      height: 64px;
+    }
   }
 </style>
 </head>
