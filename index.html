@@ -188,10 +188,10 @@
     magikarp: 129
   };
 
-  // Custom sprites URLs for Pokémon with missing or incorrect default sprites
+  // Updated custom sprite URLs for missing or incorrect sprites
   const customSprites = {
-  liligant: 'https://play.pokemonshowdown.com/sprites/shiny/lilligant.png'
-};
+    liligant: 'https://play.pokemonshowdown.com/sprites/shiny/lilligant.png'
+  };
 
   const trainers = {
     Tuna: [
@@ -214,7 +214,6 @@
 
   function createCard(pokemonName, trainerName) {
     const number = dexNumbers[pokemonName];
-    // Use custom sprite if available, else default shiny sprite
     const spriteUrl = customSprites[pokemonName] || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/${number}.png`;
     const card = document.createElement('div');
     card.className = 'pokemon-card';
