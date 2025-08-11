@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>PokeMMO Shiny Dex</title>
+<title>My PokeMMO Shiny Dex</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
 
@@ -148,7 +148,7 @@
 </head>
 <body>
 
-<header>POKÉMMO SHINY DEX</header>
+<header>MY POKÉMMO SHINY DEX</header>
 
 <section>
   <h2>Tuna</h2>
@@ -178,7 +178,7 @@
     haxorus: 612,
     whirlipede: 544,
     scolipede: 545,
-    liligant: 548,
+    lilligant: 548,
     psyduck: 54,
     golurk: 623,
     duskclops: 356,
@@ -188,14 +188,13 @@
     magikarp: 129
   };
 
-  // Updated custom sprite URLs for missing or incorrect sprites
   const customSprites = {
-    liligant: 'https://play.pokemonshowdown.com/sprites/shiny/lilligant.png'
+    lilligant: 'https://raw.githubusercontent.com/veekun/pokedex/master/pokedex/media/sprites/black-white/shiny/lilligant.png'
   };
 
   const trainers = {
     Tuna: [
-      'octillery', 'joltik', 'aggron', 'haxorus', 'whirlipede', 'scolipede', 'liligant', 'psyduck', 'golurk', 'duskclops', 'weezing'
+      'octillery', 'joltik', 'aggron', 'haxorus', 'whirlipede', 'scolipede', 'lilligant', 'psyduck', 'golurk', 'duskclops', 'weezing'
     ],
     chels: [
       'girafarig', 'mankey', 'magikarp'
@@ -213,8 +212,9 @@
   const closeBtn = document.getElementById('closeBtn');
 
   function createCard(pokemonName, trainerName) {
-    const number = dexNumbers[pokemonName];
-    const spriteUrl = customSprites[pokemonName] || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/${number}.png`;
+    const lowerName = pokemonName.toLowerCase();
+    const number = dexNumbers[lowerName];
+    const spriteUrl = customSprites[lowerName] || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/${number}.png`;
     const card = document.createElement('div');
     card.className = 'pokemon-card';
     card.setAttribute('tabindex', '0');
