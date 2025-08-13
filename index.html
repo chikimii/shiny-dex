@@ -11,192 +11,174 @@
   :root{
     --bg:#080808;
     --panel:#111213;
+    --accent-kanto: #d32f2f;
+    --accent-johto: #b8860b;
+    --accent-hoenn: #208f5a;
+    --accent-sinnoh: #c06aa5;
+    --accent-unova: linear-gradient(90deg,#444 #ddd);
     --muted:#c7cbd1;
+    --glass: rgba(255,255,255,0.02);
   }
   *{box-sizing:border-box}
-  html,body{
-    height:100%;
-    margin:0;
-    background:linear-gradient(180deg,#060606,#0b0b0b);
-    color:var(--muted);
-    font-family: 'VT323', monospace;
-    -webkit-font-smoothing:antialiased;
-  }
+  html,body{height:100%;margin:0;background:linear-gradient(180deg,#060606,#0b0b0b);color:var(--muted);font-family: 'VT323', monospace; -webkit-font-smoothing:antialiased;}
   header{
     background: linear-gradient(90deg,#b71c1c,#ff5252);
-    padding:1.6rem 1rem;
-    text-align:center;
-    font-size:2.4rem;
-    color:#fff;
-    border-radius:0 0 12px 12px;
-    margin-bottom:1rem;
+    padding:1.6rem 1rem; text-align:center; font-size:2.4rem; color:#fff; border-radius:0 0 12px 12px; margin-bottom:1rem;
     text-shadow: 0 0 12px rgba(255,82,82,0.5);
   }
-  main {
-    max-width: 1400px;
-    margin: 0 auto 3rem;
-    padding: 0 1rem;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2rem;
-    justify-content: center;
+
+  main{
+    max-width:1400px; margin:0 auto 3rem; display:flex; gap:1.6rem; padding:0 1rem;
   }
-  .trainer-wrapper {
-    flex: 1 1 600px;
+
+  /* Left: trainer-specific grids */
+  #left-panel{
+    flex: 3 1 0; background:var(--panel); border-radius:14px; padding:1.6rem; box-shadow: 0 6px 24px rgba(0,0,0,0.6);
+    min-height:60vh;
     display: flex;
     gap: 2rem;
     flex-wrap: wrap;
     justify-content: center;
   }
-  section.trainer-section{
-    background: var(--panel);
-    border-radius:14px;
-    padding:1.6rem;
+
+  .trainer-section {
+    background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.02));
+    border-radius: 14px;
+    padding: 1rem;
+    width: 320px;
     box-shadow: 0 6px 24px rgba(0,0,0,0.6);
-    min-width: 280px;
-    flex: 1 1 280px;
   }
-  h2 {
-    text-align:center;
-    color:#ff6b6b;
-    margin-bottom:1rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-  }
-  .shiny-count {
-    text-align:center;
-    margin-bottom:1rem;
+
+  .trainer-title {
+    font-size: 1.5rem;
+    color: #ff6b6b;
+    margin-bottom: 1rem;
+    text-align: center;
     font-weight: 700;
-    color: #ffb6b6;
   }
+
   .pokedex-grid{
     display:grid;
-    grid-template-columns: repeat(auto-fill,minmax(120px,1fr));
+    grid-template-columns: repeat(auto-fill, minmax(140px,1fr));
     gap:12px;
   }
+
   .poke-card{
     background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.02));
-    border-radius:12px;
-    padding:8px;
-    text-align:center;
-    cursor:pointer;
-    border:2px solid rgba(255,255,255,0.03);
+    border-radius:12px; padding:10px; text-align:center; cursor:pointer; border:2px solid rgba(255,255,255,0.03);
     transition: transform .18s ease, box-shadow .18s ease;
-    user-select:none;
+    position:relative; overflow:visible;
   }
-  .poke-card:hover, .poke-card:focus{
-    transform: translateY(-6px);
-    box-shadow: 0 14px 40px rgba(0,0,0,0.6);
-    outline:none;
-    z-index:2;
-  }
-  .dexnum{ font-size:0.85rem; color:#ffb6b6; font-weight:700; margin-bottom:4px; }
-  .pokename{ font-size:1.1rem; color:#ff6b6b; margin-bottom:8px; text-transform:capitalize; }
-  .sprite{ width:96px; height:96px; image-rendering: pixelated; display:block; margin:0 auto; }
+  .poke-card:focus, .poke-card:hover{ transform: translateY(-6px); box-shadow: 0 14px 40px rgba(0,0,0,0.6); outline:none; z-index:2 }
 
-  /* Info panel on right */
-  #info-panel {
-    background: var(--panel);
-    border-radius: 14px;
-    padding: 1.6rem;
-    box-shadow: 0 6px 24px rgba(0,0,0,0.6);
-    width: 320px;
-    min-width: 320px;
-    user-select:none;
+  .dexnum{ font-size:0.9rem; color:#ffb6b6; font-weight:700; margin-bottom:4px; }
+  .pokename{ font-size:1.2rem; color:#ff6b6b; margin-bottom:8px; text-transform:capitalize; }
+  .sprite{ width:96px; height:96px; image-rendering: pixelated; display:block; margin:0 auto 8px; }
+
+  /* sparkle overlay (hidden by default) */
+  .sparkle-overlay{ position:absolute; inset:0; pointer-events:none; opacity:0; transition: opacity .12s ease; }
+  .sparkle-overlay.play{ opacity:1; }
+
+  /* star */
+  .star{
+    position:absolute; width:18px; height:18px; background: radial-gradient(circle at 30% 30%, #fff 0%, rgba(255,255,255,0.9) 10%, rgba(255,215,0,0.8) 30%, rgba(255,215,0,0.2) 60%, rgba(255,215,0,0) 100%);
+    transform: rotate(25deg) scale(0);
+    border-radius:3px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6));
+    animation: starpop .8s forwards;
+  }
+  @keyframes starpop{
+    0%{ transform: scale(0) translateY(6px); opacity:0 }
+    10%{ transform: scale(1.05) translateY(-6px); opacity:1 }
+    50%{ transform: scale(.9) translateY(-12px); opacity:.9 }
+    100%{ transform: scale(.6) translateY(6px); opacity:0 }
+  }
+
+  /* side card contents */
+  #right-panel{
+    flex: 1 1 360px; background:linear-gradient(180deg,#131416,#0f1113); border-radius:14px; padding:1.4rem; box-shadow:0 6px 22px rgba(0,0,0,0.6);
+    min-width:280px; position:sticky; top:1rem; height: fit-content;
     color: var(--muted);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-size: 1.1rem;
-    white-space: pre-wrap; /* preserve line breaks */
+    font-size: 0.95rem;
   }
-  #info-panel img {
-    width: 160px;
-    height: 160px;
-    image-rendering: pixelated;
+
+  #right-panel .trainer{
+    display:flex; align-items:center; gap:12px; margin-bottom:12px;
+  }
+  .trainer img{ width:64px; height:96px; image-rendering: pixelated; border:2px solid rgba(255,255,255,0.06); border-radius:8px; }
+  #shinyCount{font-size:0.95rem;color:#ffd7d7}
+
+  #infoSprite{ width:160px; height:160px; image-rendering: pixelated; display:block; margin:0 auto 12px; }
+  #infoName{ font-size:2rem; color:#ff6b6b; text-align:center; text-transform:capitalize; margin-bottom:6px; }
+  #infoNum{ text-align:center; color:#ffb6b6; font-weight:700; margin-bottom:8px;}
+  #infoTrainer{ text-align:center; margin-bottom:8px; }
+  #infoLevel{ text-align:center; margin-bottom:8px; }
+  #caughtText, #prefs, #notes {
+    white-space: pre-line;
     margin-bottom: 12px;
-  }
-  #info-name {
-    font-size: 2rem;
-    color: #ff6b6b;
-    text-transform: capitalize;
-    margin-bottom: 6px;
-    text-align:center;
-  }
-  #info-num {
-    font-weight: 700;
-    color: #ffb6b6;
-    margin-bottom: 12px;
-    text-align:center;
-  }
-  #info-trainer {
-    font-weight: 600;
-    margin-bottom: 8px;
-    color: var(--muted);
-    text-align:center;
-  }
-  #info-details {
-    font-size: 1rem;
-    background: #222326;
+    padding: 6px 10px;
+    background: rgba(255,255,255,0.03);
     border-radius: 10px;
-    padding: 12px;
-    width: 100%;
-    color: #d0d0d0;
-    white-space: pre-wrap;
   }
 
-  /* Responsive */
-  @media (max-width: 960px) {
-    main {
-      flex-direction: column;
-      align-items: center;
-    }
-    #info-panel {
-      width: 100%;
-      min-width: auto;
-      margin-top: 2rem;
-    }
-    .trainer-wrapper {
-      flex-wrap: nowrap;
-      flex-direction: column;
-      width: 100%;
-    }
+  .mini-row{ display:flex; gap:8px; justify-content:center; margin-top:10px; }
+  .btn{ background:#222; padding:6px 10px; border-radius:8px; cursor:pointer; border:1px solid rgba(255,255,255,0.03); }
+
+  /* desktop wider tweaks */
+  @media(min-width:1100px){
+    main{ padding:0 2rem; }
+    .pokedex-grid{ grid-template-columns: repeat(auto-fill, minmax(160px,1fr)); }
+    #right-panel{ min-width:360px; }
+    #left-panel{ flex-wrap: nowrap; }
+    .trainer-section{ width: 100%; max-width: 420px; }
   }
+
+  /* responsive stack */
+  @media(max-width:900px){
+    main{ flex-direction:column; padding:0 12px; }
+    #right-panel{ order:-1; margin-bottom: 1rem; position: relative; top: auto; }
+    #left-panel{ flex-wrap: wrap; justify-content: center; }
+    .trainer-section{ width: 100%; max-width: 400px; }
+  }
+
 </style>
 </head>
 <body>
 <header>POKÉMMO — Trainer ShinyDex</header>
+
 <main>
-
-  <div class="trainer-wrapper" role="list">
-
-    <section class="trainer-section" id="chels-section" aria-label="Chels's shinies">
-      <h2>Chels</h2>
-      <div class="shiny-count" id="chels-shiny-count">ShinyDex: 0</div>
-      <div class="pokedex-grid" id="chels-grid"></div>
-    </section>
-
-    <section class="trainer-section" id="tuna-section" aria-label="Tuna's shinies">
-      <h2>Tuna</h2>
-      <div class="shiny-count" id="tuna-shiny-count">ShinyDex: 0</div>
-      <div class="pokedex-grid" id="tuna-grid"></div>
-    </section>
-
-  </div>
-
-  <section id="info-panel" aria-live="polite" aria-atomic="true" aria-label="Selected shiny info">
-    <img id="info-sprite" src="" alt="Selected shiny sprite" />
-    <div id="info-name">Hover or focus on a shiny</div>
-    <div id="info-num"></div>
-    <div id="info-trainer"></div>
-    <div id="info-details">No shiny selected</div>
+  <section id="left-panel" aria-label="Trainer shiny lists">
+    <!-- Trainer sections inserted here -->
   </section>
 
+  <aside id="right-panel" aria-live="polite" aria-atomic="true">
+    <div class="trainer">
+      <img id="trainerAvatar" src="https://archives.pokemmo.eu/images/avatarMale_3.png" alt="Trainer avatar" />
+      <div>
+        <div id="trainerName">Tuna</div>
+        <div id="shinyCount">ShinyDex: 0</div>
+      </div>
+    </div>
+
+    <img id="infoSprite" src="https://img.pokemondb.net/sprites/black-white/anim/shiny/octillery.gif" alt="info sprite" />
+    <div id="infoName">Octillery</div>
+    <div id="infoNum">#224</div>
+    <div id="infoTrainer">Trainer: Tuna</div>
+    <div id="infoLevel">Lv. —</div>
+
+    <div id="caughtText">—</div>
+    <div id="prefs">—</div>
+    <div id="notes">—</div>
+
+    <div class="mini-row">
+      <div class="btn" id="toggleBackBtn">Show back</div>
+      <div class="btn" id="playCryBtn">Play cry</div>
+    </div>
+  </aside>
 </main>
 
 <script>
 const shinies = [
-  // Chels
+  // Chels' shinies
   {
     file: "girafarig",
     name: "Girafarig",
@@ -230,8 +212,15 @@ Likes Sweet food.
 Dislikes Bitter food.
 Somewhat vain.`
   },
+  {
+    file: "tailow",
+    name: "Tailow",
+    dex: 276,
+    trainer: "Chels",
+    details: `Chico! A gift from Tuna because he’s so sweet ♡`
+  },
 
-  // Tuna
+  // Tuna's shinies
   {
     file: "lilligant",
     name: "Lilligant",
@@ -349,20 +338,18 @@ Dislikes Dry food.
 Often dozes off.
 Hidden Ability unlocked.`
   },
-  // Added Octillery
   {
     file: "octillery",
     name: "Octillery",
     dex: 224,
     trainer: "Tuna",
-    details: `Met at Undella Bay
+    details: `Met at Battle Frontier
 after 54017 encounter on
 8/8/25 9:01:47 PM
 Likes Sweet food.
 Dislikes Sour food.
 Mischievous.`
   },
-  // Added Venipede
   {
     file: "venipede",
     name: "Venipede",
@@ -372,70 +359,67 @@ Mischievous.`
 8/12/25 11:24:16 AM
 No flavor preferences.
 Alert to sounds.`
-  },
+  }
 ];
 
-function getFrontSpriteUrl(poke){
-  return `https://img.pokemondb.net/sprites/black-white/anim/shiny/${poke.file}.gif`;
+// Utility/fallback functions to build URLs
+function frontUrl(s){
+  return s.frontLocal || `https://img.pokemondb.net/sprites/black-white/anim/shiny/${s.file}.gif`;
+}
+function backUrl(s){
+  return s.backLocal || `https://img.pokemondb.net/sprites/black-white/anim/back-shiny/${s.file}.gif`;
+}
+function cryUrl(s){
+  return s.cryLocal || `assets/cries/${s.file}.ogg`;
 }
 
-function buildTrainerGrid(trainerName, containerId, countId){
-  const container = document.getElementById(containerId);
-  const countEl = document.getElementById(countId);
-  const filtered = shinies.filter(p => p.trainer === trainerName);
-  countEl.textContent = `ShinyDex: ${filtered.length}`;
-  filtered.sort((a,b) => a.dex - b.dex);
+// Map trainers to avatars
+const trainerAvatars = {
+  "Tuna": "https://archives.pokemmo.eu/images/avatarMale_3.png",
+  "Chels": "https://archives.pokemmo.eu/images/avatarFemale_14.png"
+};
 
-  container.innerHTML = ''; // clear previous content if any
+const leftPanel = document.getElementById('left-panel');
+const trainerAvatar = document.getElementById('trainerAvatar');
+const trainerNameEl = document.getElementById('trainerName');
+const shinyCountEl = document.getElementById('shinyCount');
+const infoSprite = document.getElementById('infoSprite');
+const infoName = document.getElementById('infoName');
+const infoNum = document.getElementById('infoNum');
+const infoTrainer = document.getElementById('infoTrainer');
+const infoLevel = document.getElementById('infoLevel');
+const caughtText = document.getElementById('caughtText');
+const prefs = document.getElementById('prefs');
+const notes = document.getElementById('notes');
+const toggleBackBtn = document.getElementById('toggleBackBtn');
+const playCryBtn = document.getElementById('playCryBtn');
 
-  filtered.forEach(p=>{
-    const card = document.createElement('button');
-    card.className = 'poke-card';
-    card.setAttribute('aria-label', `${p.name} #${p.dex} caught by ${p.trainer}`);
-    card.type = 'button';
+let audio = null;
+let showingBack = false;
 
-    const num = document.createElement('div');
-    num.className = 'dexnum';
-    num.textContent = `#${String(p.dex).padStart(3,'0')}`;
+// Group shinies by trainer
+const trainers = {};
+shinies.forEach(s => {
+  if (!trainers[s.trainer]) trainers[s.trainer] = [];
+  trainers[s.trainer].push(s);
+});
 
-    const name = document.createElement('div');
-    name.className = 'pokename';
-    name.textContent = p.name;
+// Show total count
+const totalShinies = shinies.length;
+shinyCountEl.textContent = `ShinyDex: ${totalShinies}`;
 
-    const img = document.createElement('img');
-    img.className = 'sprite';
-    img.src = getFrontSpriteUrl(p);
-    img.alt = `${p.name} shiny sprite`;
-
-    card.appendChild(num);
-    card.appendChild(img);
-    card.appendChild(name);
-    container.appendChild(card);
-
-    // Hover/focus event to update info panel
-    card.addEventListener('mouseenter', () => updateInfoPanel(p));
-    card.addEventListener('focus', () => updateInfoPanel(p));
-  });
-}
-
-function updateInfoPanel(poke){
-  const infoSprite = document.getElementById('info-sprite');
-  const infoName = document.getElementById('info-name');
-  const infoNum = document.getElementById('info-num');
-  const infoTrainer = document.getElementById('info-trainer');
-  const infoDetails = document.getElementById('info-details');
-
-  infoSprite.src = getFrontSpriteUrl(poke);
-  infoSprite.alt = `${poke.name} shiny sprite`;
-  infoName.textContent = poke.name;
-  infoNum.textContent = `#${String(poke.dex).padStart(3,'0')}`;
-  infoTrainer.textContent = `Trainer: ${poke.trainer}`;
-  infoDetails.textContent = poke.details || "No additional info available";
-}
-
-// Initialize
-buildTrainerGrid('Chels', 'chels-grid', 'chels-shiny-count');
-buildTrainerGrid('Tuna', 'tuna-grid', 'tuna-shiny-count');
-</script>
-</body>
-</html>
+// Build UI: one section per trainer
+Object.entries(trainers).forEach(([trainerName, pokes]) => {
+  const section = document.createElement('section');
+  section.className = 'trainer-section';
+  section.setAttribute('aria-label', `${trainerName}'s shinies`);
+  
+  const title = document.createElement('h2');
+  title.className = 'trainer-title';
+  title.textContent = `${trainerName}'s Shinies`;
+  section.appendChild(title);
+  
+  const grid = document.createElement('div');
+  grid.className = 'pokedex-grid';
+  
+  pok
