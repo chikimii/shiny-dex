@@ -102,23 +102,6 @@
   .pokename{ font-size:1.2rem; color:#ff6b6b; margin-bottom:8px; text-transform:capitalize; }
   .sprite{ width:96px; height:96px; image-rendering: pixelated; display:block; margin:0 auto 8px; }
 
-  /* sparkle overlay */
-  .sparkle-overlay{ position:absolute; inset:0; pointer-events:none; opacity:0; transition: opacity .12s ease; }
-  .sparkle-overlay.play{ opacity:1; }
-
-  .star{
-    position:absolute; width:18px; height:18px; background: radial-gradient(circle at 30% 30%, #fff 0%, rgba(255,255,255,0.9) 10%, rgba(255,215,0,0.8) 30%, rgba(255,215,0,0.2) 60%, rgba(255,215,0,0) 100%);
-    transform: rotate(25deg) scale(0);
-    border-radius:3px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6));
-    animation: starpop .8s forwards;
-  }
-  @keyframes starpop{
-    0%{ transform: scale(0) translateY(6px); opacity:0 }
-    10%{ transform: scale(1.05) translateY(-6px); opacity:1 }
-    50%{ transform: scale(.9) translateY(-12px); opacity:.9 }
-    100%{ transform: scale(.6) translateY(6px); opacity:0 }
-  }
-
   /* side card */
   #infoSprite{ width:160px; height:160px; image-rendering: pixelated; display:block; margin:0 auto 12px; }
   #infoName{ font-size:2rem; color:#ff6b6b; text-align:center; text-transform:capitalize; margin-bottom:6px; }
@@ -158,17 +141,17 @@
 </section>
 
 <!-- PAGE 2: Shiny Dex -->
-<main id="page2" aria-label="ShinyDex page">
+<main id="page2" aria-label="ShinyDex page" tabindex="-1" >
   <section id="left-panel" aria-label="Pokedex listing">
     <div id="pokedex-container"></div>
   </section>
 
   <aside id="right-panel" aria-live="polite">
-    <div class="trainer">
-      <img id="trainerAvatar" src="" alt="Trainer avatar" />
+    <div class="trainer" style="text-align:center; margin-bottom: 1rem;">
+      <img id="trainerAvatar" src="" alt="Trainer avatar" style="width:140px; height:210px; image-rendering: pixelated; border-radius:10px;" />
       <div>
-        <div id="trainerName"></div>
-        <div id="shinyCount"></div>
+        <div id="trainerName" style="font-size: 1.8rem; color: #ff6b6b; margin-top: 0.5rem;"></div>
+        <div id="shinyCount" style="color: #ffb6b6; font-weight: 700;"></div>
       </div>
     </div>
 
@@ -212,9 +195,9 @@ const shinies = [
     name: "Girafarig",
     dex: 203,
     trainer: "Chels",
-    frontLocal: "assets/sprites/front/girafarig.gif",
-    backLocal: "assets/sprites/back/girafarig.gif",
-    cryLocal: "assets/cries/girafarig.ogg",
+    frontLocal: "https://archives.pokemmo.eu/shiny/front/girafarig.gif",
+    backLocal: "https://archives.pokemmo.eu/shiny/back/girafarig.gif",
+    cryLocal: "https://archives.pokemmo.eu/cries/girafarig.ogg",
     caught: {
       level: 24,
       place: "Route 43",
@@ -229,9 +212,9 @@ const shinies = [
     name: "Mankey",
     dex: 56,
     trainer: "Chels",
-    frontLocal: "assets/sprites/front/mankey.gif",
-    backLocal: "assets/sprites/back/mankey.gif",
-    cryLocal: "assets/cries/mankey.ogg",
+    frontLocal: "https://archives.pokemmo.eu/shiny/front/mankey.gif",
+    backLocal: "https://archives.pokemmo.eu/shiny/back/mankey.gif",
+    cryLocal: "https://archives.pokemmo.eu/cries/mankey.ogg",
     caught: {
       level: 21,
       place: "Route 42",
@@ -246,9 +229,9 @@ const shinies = [
     name: "Magikarp",
     dex: 129,
     trainer: "Chels",
-    frontLocal: "assets/sprites/front/magikarp.gif",
-    backLocal: "assets/sprites/back/magikarp.gif",
-    cryLocal: "assets/cries/magikarp.ogg",
+    frontLocal: "https://archives.pokemmo.eu/shiny/front/magikarp.gif",
+    backLocal: "https://archives.pokemmo.eu/shiny/back/magikarp.gif",
+    cryLocal: "https://archives.pokemmo.eu/cries/magikarp.ogg",
     caught: {
       level: 33,
       place: "Dragon's Den",
@@ -265,9 +248,9 @@ const shinies = [
     name: "Lilligant",
     dex: 549,
     trainer: "Tuna",
-    frontLocal: "assets/sprites/front/lilligant.gif",
-    backLocal: "assets/sprites/back/lilligant.gif",
-    cryLocal: "assets/cries/lilligant.ogg",
+    frontLocal: "https://archives.pokemmo.eu/shiny/front/lilligant.gif",
+    backLocal: "https://archives.pokemmo.eu/shiny/back/lilligant.gif",
+    cryLocal: "https://archives.pokemmo.eu/cries/lilligant.ogg",
     caught: {
       level: 19,
       place: "Lostlorn Forest",
@@ -282,9 +265,9 @@ const shinies = [
     name: "Whirlipede",
     dex: 544,
     trainer: "Tuna",
-    frontLocal: "assets/sprites/front/whirlipede.gif",
-    backLocal: "assets/sprites/back/whirlipede.gif",
-    cryLocal: "assets/cries/whirlipede.ogg",
+    frontLocal: "https://archives.pokemmo.eu/shiny/front/whirlipede.gif",
+    backLocal: "https://archives.pokemmo.eu/shiny/back/whirlipede.gif",
+    cryLocal: "https://archives.pokemmo.eu/cries/whirlipede.ogg",
     caught: {
       level: 18,
       place: "Lostlorn Forest",
@@ -299,9 +282,9 @@ const shinies = [
     name: "Scolipede",
     dex: 545,
     trainer: "Tuna",
-    frontLocal: "assets/sprites/front/scolipede.gif",
-    backLocal: "assets/sprites/back/scolipede.gif",
-    cryLocal: "assets/cries/scolipede.ogg",
+    frontLocal: "https://archives.pokemmo.eu/shiny/front/scolipede.gif",
+    backLocal: "https://archives.pokemmo.eu/shiny/back/scolipede.gif",
+    cryLocal: "https://archives.pokemmo.eu/cries/scolipede.ogg",
     caught: {
       level: 18,
       place: "Lostlorn Forest",
@@ -316,9 +299,9 @@ const shinies = [
     name: "Aggron",
     dex: 306,
     trainer: "Tuna",
-    frontLocal: "assets/sprites/front/aggron.gif",
-    backLocal: "assets/sprites/back/aggron.gif",
-    cryLocal: "assets/cries/aggron.ogg",
+    frontLocal: "https://archives.pokemmo.eu/shiny/front/aggron.gif",
+    backLocal: "https://archives.pokemmo.eu/shiny/back/aggron.gif",
+    cryLocal: "https://archives.pokemmo.eu/cries/aggron.ogg",
     caught: {
       level: 38,
       place: "Victory Road",
@@ -333,9 +316,9 @@ const shinies = [
     name: "Haxorus",
     dex: 612,
     trainer: "Tuna",
-    frontLocal: "assets/sprites/front/haxorus.gif",
-    backLocal: "assets/sprites/back/haxorus.gif",
-    cryLocal: "assets/cries/haxorus.ogg",
+    frontLocal: "https://archives.pokemmo.eu/shiny/front/haxorus.gif",
+    backLocal: "https://archives.pokemmo.eu/shiny/back/haxorus.gif",
+    cryLocal: "https://archives.pokemmo.eu/cries/haxorus.ogg",
     caught: {
       level: 26,
       place: "Guidance Chamber",
@@ -350,9 +333,9 @@ const shinies = [
     name: "Joltik",
     dex: 595,
     trainer: "Tuna",
-    frontLocal: "assets/sprites/front/joltik.gif",
-    backLocal: "assets/sprites/back/joltik.gif",
-    cryLocal: "assets/cries/joltik.ogg",
+    frontLocal: "https://archives.pokemmo.eu/shiny/front/joltik.gif",
+    backLocal: "https://archives.pokemmo.eu/shiny/back/joltik.gif",
+    cryLocal: "https://archives.pokemmo.eu/cries/joltik.ogg",
     caught: {
       level: 22,
       place: "Chargestone Cave",
@@ -367,9 +350,9 @@ const shinies = [
     name: "Weezing",
     dex: 110,
     trainer: "Tuna",
-    frontLocal: "assets/sprites/front/weezing.gif",
-    backLocal: "assets/sprites/back/weezing.gif",
-    cryLocal: "assets/cries/weezing.ogg",
+    frontLocal: "https://archives.pokemmo.eu/shiny/front/weezing.gif",
+    backLocal: "https://archives.pokemmo.eu/shiny/back/weezing.gif",
+    cryLocal: "https://archives.pokemmo.eu/cries/weezing.ogg",
     caught: {
       level: null,
       place: "Burned Tower",
@@ -377,4 +360,19 @@ const shinies = [
       datetime: "2025-08-03 18:50:47"
     },
     prefs: { likes: "Dry food", dislikes: "Sour food", personality: "Often dozes off" },
-    notes
+    notes: ""
+  }
+];
+
+// Globals to track
+let currentTrainer = null;
+let showingBack = false;
+let currentCryAudio = null;
+
+const page1 = document.getElementById('page1');
+const page2 = document.getElementById('page2');
+
+const pokedexContainer = document.getElementById('pokedex-container');
+
+const infoSprite = document.getElementById('infoSprite');
+const infoName = document.get
