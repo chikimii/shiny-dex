@@ -1,32 +1,29 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Trainer ShinyDex - Single Page</title>
-<link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Trainer ShinyDex Single Page</title>
 <style>
   :root {
     --bg:#080808;
     --panel:#111213;
     --muted:#c7cbd1;
   }
-  *{box-sizing:border-box;}
+  * { box-sizing: border-box; }
   body {
-    margin:0; font-family: 'VT323', monospace; background:linear-gradient(180deg,#060606,#0b0b0b); color:var(--muted); -webkit-font-smoothing:antialiased;
+    margin: 0; font-family: 'VT323', monospace; background: linear-gradient(180deg,#060606,#0b0b0b); color: var(--muted);
   }
   header {
     background: linear-gradient(90deg,#b71c1c,#ff5252);
-    padding:1.6rem;
-    font-size:2.4rem;
-    color:#fff;
-    text-align:center;
-    border-radius: 0 0 12px 12px;
-    margin-bottom: 1rem;
+    padding: 1.5rem; text-align: center; font-size: 2.4rem; color: white; border-radius: 0 0 12px 12px; margin-bottom: 1rem;
     text-shadow: 0 0 12px rgba(255,82,82,0.5);
   }
   #trainer-select {
-    display:flex; justify-content:center; gap:5rem; margin:0 1rem 2rem;
+    display: flex;
+    justify-content: center;
+    gap: 5rem;
+    margin: 0 1rem 2rem;
   }
   .character-card {
     background: linear-gradient(180deg, #222224, #2c2c2f);
@@ -60,14 +57,13 @@
   }
 
   #shiny-section {
+    display: none;
     max-width: 1200px;
     margin: 0 auto 3rem;
-    display: none;
     gap: 1.6rem;
     padding: 0 1rem;
     min-height: 70vh;
-    flex-wrap: nowrap;
-    box-sizing: border-box;
+    display: flex;
   }
   #left-panel {
     flex: 3 1 0;
@@ -86,6 +82,7 @@
     box-shadow: 0 6px 22px rgba(0,0,0,0.6);
     min-width: 280px;
     position: relative;
+    color: var(--muted);
   }
   .pokedex-grid {
     display: grid;
@@ -129,7 +126,7 @@
     margin: 0 auto 8px;
   }
 
-  /* side card */
+  /* side info */
   #infoSprite {
     width: 160px;
     height: 160px;
@@ -162,14 +159,12 @@
     padding: 6px 10px;
     border-radius: 8px;
     font-size: 0.9rem;
-    color: var(--muted);
   }
   .info-block {
     background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.02));
     padding: 10px;
     border-radius: 10px;
     margin-top: 8px;
-    color: var(--muted);
     font-size: 0.95rem;
     line-height: 1.25;
   }
@@ -186,6 +181,7 @@
     cursor: pointer;
     border: 1px solid rgba(255,255,255,0.03);
     user-select:none;
+    color: var(--muted);
   }
   .btn:hover {
     background: #ff5252;
@@ -210,7 +206,7 @@
 
 <section id="shiny-section" aria-label="Shiny Pokémon for selected trainer" tabindex="-1">
   <div id="left-panel">
-    <div id="pokedex-container" class="pokedex-grid"></div>
+    <div id="pokedex-container" class="pokedex-grid" tabindex="0"></div>
   </div>
   <aside id="right-panel" aria-live="polite">
     <div class="trainer" style="text-align:center; margin-bottom: 1rem;">
@@ -246,14 +242,23 @@
     </div>
 
     <div class="mini-row">
-      <div class="btn" id="toggleBackBtn">Show back</div>
-      <div class="btn" id="playCryBtn">Play cry</div>
-      <div class="btn" id="backToSelectBtn" style="margin-left:auto; background:#900;">Back</div>
+      <button class="btn" id="toggleBackBtn">Show back</button>
+      <button class="btn" id="playCryBtn">Play cry</button>
+      <button class="btn" id="backToSelectBtn" style="margin-left:auto; background:#900; color:#fff;">Back</button>
     </div>
   </aside>
 </section>
 
 <script>
+const trainers = {
+  Tuna: {
+    avatar: "https://archives.pokemmo.eu/images/avatarMale_3.png",
+  },
+  Chels: {
+    avatar: "https://archives.pokemmo.eu/images/avatarFemale_14.png",
+  }
+};
+
 const shinies = [
   // Chels
   {
@@ -307,7 +312,6 @@ const shinies = [
     prefs: { likes: "Sweet food", dislikes: "Bitter food", personality: "Somewhat vain" },
     notes: ""
   },
-
   // Tuna
   {
     file: "lilligant",
@@ -342,93 +346,103 @@ const shinies = [
     },
     prefs: { likes: "Dry food", dislikes: "Sour food", personality: "Mischievous" },
     notes: ""
-  },
-  {
-    file: "scolipede",
-    name: "Scolipede",
-    dex: 545,
-    trainer: "Tuna",
-    frontLocal: "https://archives.pokemmo.eu/shiny/front/scolipede.gif",
-    backLocal: "https://archives.pokemmo.eu/shiny/back/scolipede.gif",
-    cryLocal: "https://archives.pokemmo.eu/cries/scolipede.ogg",
-    caught: {
-      level: 18,
-      place: "Lostlorn Forest",
-      encounters: 11750,
-      datetime: "2025-08-08 21:15:51"
-    },
-    prefs: { likes: "—", dislikes: "—", personality: "Likes to thrash about" },
-    notes: ""
-  },
-  {
-    file: "aggron",
-    name: "Aggron",
-    dex: 306,
-    trainer: "Tuna",
-    frontLocal: "https://archives.pokemmo.eu/shiny/front/aggron.gif",
-    backLocal: "https://archives.pokemmo.eu/shiny/back/aggron.gif",
-    cryLocal: "https://archives.pokemmo.eu/cries/aggron.ogg",
-    caught: {
-      level: 38,
-      place: "Victory Road",
-      encounters: 17193,
-      datetime: "2025-07-15 08:37:35"
-    },
-    prefs: { likes: "Bitter food", dislikes: "Dry food", personality: "Likes to thrash about" },
-    notes: ""
-  },
-  {
-    file: "haxorus",
-    name: "Haxorus",
-    dex: 612,
-    trainer: "Tuna",
-    frontLocal: "https://archives.pokemmo.eu/shiny/front/haxorus.gif",
-    backLocal: "https://archives.pokemmo.eu/shiny/back/haxorus.gif",
-    cryLocal: "https://archives.pokemmo.eu/cries/haxorus.ogg",
-    caught: {
-      level: 26,
-      place: "Guidance Chamber",
-      encounters: 6751,
-      datetime: "2025-07-12 21:22:38"
-    },
-    prefs: { likes: "Sweet food", dislikes: "Bitter food", personality: "Mischievous" },
-    notes: ""
-  },
-  {
-    file: "joltik",
-    name: "Joltik",
-    dex: 595,
-    trainer: "Tuna",
-    frontLocal: "https://archives.pokemmo.eu/shiny/front/joltik.gif",
-    backLocal: "https://archives.pokemmo.eu/shiny/back/joltik.gif",
-    cryLocal: "https://archives.pokemmo.eu/cries/joltik.ogg",
-    caught: {
-      level: 22,
-      place: "Chargestone Cave",
-      encounters: 11974,
-      datetime: "2025-07-27 12:12:36"
-    },
-    prefs: { likes: "Sour food", dislikes: "Spicy food", personality: "Likes to thrash about" },
-    notes: ""
-  },
-  {
-    file: "weezing",
-    name: "Weezing",
-    dex: 110,
-    trainer: "Tuna",
-    frontLocal: "https://archives.pokemmo.eu/shiny/front/weezing.gif",
-    backLocal: "https://archives.pokemmo.eu/shiny/back/weezing.gif",
-    cryLocal: "https://archives.pokemmo.eu/cries/weezing.ogg",
-    caught: {
-      level: null,
-      place: "Burned Tower",
-      encounters: 35861,
-      datetime: "2025-08-03 18:50:47"
-    },
-    prefs: { likes: "Dry food", dislikes: "Sour food", personality: "Often dozes off" },
-    notes: ""
   }
 ];
 
 // Elements
-const trainerSelect = document.getElementById('
+const trainerSelect = document.getElementById('trainer-select');
+const shinySection = document.getElementById('shiny-section');
+const pokedexContainer = document.getElementById('pokedex-container');
+
+const trainerAvatar = document.getElementById('trainerAvatar');
+const trainerName = document.getElementById('trainerName');
+const shinyCount = document.getElementById('shinyCount');
+
+const infoSprite = document.getElementById('infoSprite');
+const infoName = document.getElementById('infoName');
+const infoNum = document.getElementById('infoNum');
+const infoTrainer = document.getElementById('infoTrainer');
+const infoLevel = document.getElementById('infoLevel');
+const caughtText = document.getElementById('caughtText');
+const prefs = document.getElementById('prefs');
+const notes = document.getElementById('notes');
+
+const toggleBackBtn = document.getElementById('toggleBackBtn');
+const playCryBtn = document.getElementById('playCryBtn');
+const backToSelectBtn = document.getElementById('backToSelectBtn');
+
+let currentTrainer = null;
+let currentPokemon = null;
+let showingBack = false;
+let audio = null;
+
+function clearInfo() {
+  infoSprite.src = "";
+  infoName.textContent = "";
+  infoNum.textContent = "";
+  infoTrainer.textContent = "";
+  infoLevel.textContent = "";
+  caughtText.textContent = "";
+  prefs.textContent = "";
+  notes.textContent = "";
+  showingBack = false;
+  toggleBackBtn.textContent = "Show back";
+  playCryBtn.disabled = true;
+}
+
+function renderShinies(trainer) {
+  pokedexContainer.innerHTML = "";
+  const filtered = shinies.filter(s => s.trainer === trainer);
+  shinyCount.textContent = `${filtered.length} shinies`;
+  filtered.forEach(p => {
+    const card = document.createElement('div');
+    card.className = 'poke-card';
+    card.tabIndex = 0;
+    card.setAttribute('role', 'button');
+    card.setAttribute('aria-label', `${p.name}, dex number ${p.dex}`);
+    const img = document.createElement('img');
+    img.className = 'sprite';
+    img.src = p.frontLocal;
+    img.alt = `${p.name} shiny sprite front`;
+    card.appendChild(img);
+    const dexNum = document.createElement('div');
+    dexNum.className = 'dexnum';
+    dexNum.textContent = `#${p.dex}`;
+    card.appendChild(dexNum);
+    const nameDiv = document.createElement('div');
+    nameDiv.className = 'pokename';
+    nameDiv.textContent = p.name;
+    card.appendChild(nameDiv);
+
+    card.addEventListener('click', () => {
+      showInfo(p);
+    });
+    card.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        showInfo(p);
+      }
+    });
+
+    pokedexContainer.appendChild(card);
+  });
+
+  clearInfo();
+  if (filtered.length > 0) showInfo(filtered[0]);
+}
+
+function showInfo(pokemon) {
+  currentPokemon = pokemon;
+  showingBack = false;
+  infoSprite.src = pokemon.frontLocal;
+  infoName.textContent = pokemon.name;
+  infoNum.textContent = `#${pokemon.dex}`;
+  infoTrainer.textContent = pokemon.trainer;
+  infoLevel.textContent = `Lv. ${pokemon.caught.level ?? '?'}`;
+  caughtText.textContent = `
+    Place: ${pokemon.caught.place || '?'}\n
+    Encounters: ${pokemon.caught.encounters ?? '?'}\n
+    Caught at: ${pokemon.caught.datetime || '?'}
+  `;
+  prefs.textContent = `Likes: ${pokemon.prefs.likes || '?'}\nDislikes: ${pokemon.prefs.dislikes || '?'}\nPersonality: ${pokemon.prefs.personality || '?'}`;
+  notes.textContent = pokemon.notes || "(No notes
