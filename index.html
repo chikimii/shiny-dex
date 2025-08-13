@@ -231,12 +231,12 @@ Dislikes Bitter food.
 Somewhat vain.`
   },
   {
-  file: "tailow",
-  name: "Tailow",
-  dex: 276,
-  trainer: "Chels",
-  details: `Chico! A gift from Tuna because he’s so sweet ♡`
-},
+    file: "tailow",
+    name: "Tailow",
+    dex: 276,
+    trainer: "Chels",
+    details: `Chico! A gift from Tuna because he’s so sweet ♡`
+  },
 
   // Tuna
   {
@@ -356,7 +356,6 @@ Dislikes Dry food.
 Often dozes off.
 Hidden Ability unlocked.`
   },
-  // Added Octillery
   {
     file: "octillery",
     name: "Octillery",
@@ -369,7 +368,6 @@ Likes Sweet food.
 Dislikes Sour food.
 Mischievous.`
   },
-  // Added Venipede
   {
     file: "venipede",
     name: "Venipede",
@@ -383,6 +381,7 @@ Alert to sounds.`
 ];
 
 function getFrontSpriteUrl(poke){
+  // Use animated shiny gif from pokemondb for all, including Tailow
   return `https://img.pokemondb.net/sprites/black-white/anim/shiny/${poke.file}.gif`;
 }
 
