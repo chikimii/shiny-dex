@@ -1,448 +1,175 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Tuna & Chels — PokeMMO ShinyDex</title>
-
-<link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
-
+<meta charset="UTF-8">
+<title>PokeMMO Shiny Showcase</title>
 <style>
-  :root{
-    --bg:#080808;
-    --panel:#111213;
-    --muted:#c7cbd1;
-  }
-  *{box-sizing:border-box}
-  html,body{
-    height:100%;
-    margin:0;
-    background:linear-gradient(180deg,#060606,#0b0b0b);
-    color:var(--muted);
-    font-family: 'VT323', monospace;
-    -webkit-font-smoothing:antialiased;
-  }
-  header{
-    background: linear-gradient(90deg,#b71c1c,#ff5252);
-    padding:1.6rem 1rem;
-    text-align:center;
-    font-size:2.4rem;
-    color:#fff;
-    border-radius:0 0 12px 12px;
-    margin-bottom:1rem;
-    text-shadow: 0 0 12px rgba(255,82,82,0.5);
-  }
-  main {
-    max-width: 1400px;
-    margin: 0 auto 3rem;
-    padding: 0 1rem;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2rem;
-    justify-content: center;
-  }
-  .trainer-wrapper {
-    flex: 1 1 600px;
-    display: flex;
-    gap: 2rem;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  section.trainer-section{
-    background: var(--panel);
-    border-radius:14px;
-    padding:1.6rem;
-    box-shadow: 0 6px 24px rgba(0,0,0,0.6);
-    min-width: 280px;
-    flex: 1 1 280px;
-  }
-  h2 {
-    text-align:center;
-    color:#ff6b6b;
-    margin-bottom:1rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-  }
-  .shiny-count {
-    text-align:center;
-    margin-bottom:1rem;
-    font-weight: 700;
-    color: #ffb6b6;
-  }
-  .pokedex-grid{
-    display:grid;
-    grid-template-columns: repeat(auto-fill,minmax(120px,1fr));
-    gap:12px;
-  }
-  .poke-card{
-    background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.02));
-    border-radius:12px;
-    padding:8px;
-    text-align:center;
-    cursor:pointer;
-    border:2px solid rgba(255,255,255,0.03);
-    transition: transform .18s ease, box-shadow .18s ease;
-    user-select:none;
-  }
-  .poke-card:hover, .poke-card:focus{
-    transform: translateY(-6px);
-    box-shadow: 0 14px 40px rgba(0,0,0,0.6);
-    outline:none;
-    z-index:2;
-  }
-  .dexnum{ font-size:0.85rem; color:#ffb6b6; font-weight:700; margin-bottom:4px; }
-  .pokename{ font-size:1.1rem; color:#ff6b6b; margin-bottom:8px; text-transform:capitalize; }
-  .sprite{ width:96px; height:96px; image-rendering: pixelated; display:block; margin:0 auto; }
+body {
+  margin: 0;
+  font-family: 'Press Start 2P', sans-serif;
+  background-color: black;
+  color: white;
+}
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
-  /* Info panel on right */
-  #info-panel {
-    background: var(--panel);
-    border-radius: 14px;
-    padding: 1.6rem;
-    box-shadow: 0 6px 24px rgba(0,0,0,0.6);
-    width: 320px;
-    min-width: 320px;
-    user-select:none;
-    color: var(--muted);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-size: 1.1rem;
-    white-space: pre-wrap; /* preserve line breaks */
-  }
-  #info-panel img {
-    width: 160px;
-    height: 160px;
-    image-rendering: pixelated;
-    margin-bottom: 12px;
-  }
-  #info-name {
-    font-size: 2rem;
-    color: #ff6b6b;
-    text-transform: capitalize;
-    margin-bottom: 6px;
-    text-align:center;
-  }
-  #info-num {
-    font-weight: 700;
-    color: #ffb6b6;
-    margin-bottom: 12px;
-    text-align:center;
-  }
-  #info-trainer {
-    font-weight: 600;
-    margin-bottom: 8px;
-    color: var(--muted);
-    text-align:center;
-  }
-  #info-details {
-    font-size: 1rem;
-    background: #222326;
-    border-radius: 10px;
-    padding: 12px;
-    width: 100%;
-    color: #d0d0d0;
-    white-space: pre-wrap;
-  }
+.screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: url('https://archives.bulbagarden.net/media/upload/0/09/Interior_Pok%C3%A9mon_Center_BW.png') center/cover no-repeat;
+}
 
-  /* Responsive */
-  @media (max-width: 960px) {
-    main {
-      flex-direction: column;
-      align-items: center;
-    }
-    #info-panel {
-      width: 100%;
-      min-width: auto;
-      margin-top: 2rem;
-    }
-    .trainer-wrapper {
-      flex-wrap: nowrap;
-      flex-direction: column;
-      width: 100%;
-    }
-  }
+.trainer {
+  margin: 0 50px;
+  text-align: center;
+  cursor: pointer;
+}
+.trainer img {
+  max-height: 300px;
+}
+.trainer-name {
+  margin-top: 10px;
+  background: rgba(0,0,0,0.6);
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.hidden {
+  display: none;
+}
+
+.pokedex {
+  padding: 20px;
+  background: #222;
+}
+.dex-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  gap: 15px;
+}
+.dex-entry {
+  position: relative;
+  background: #333;
+  padding: 10px;
+  border-radius: 10px;
+  text-align: center;
+  transition: transform 0.2s;
+  cursor: pointer;
+}
+.dex-entry:hover {
+  transform: scale(1.1);
+}
+.dex-entry img {
+  width: 96px;
+  height: 96px;
+}
+
+.sparkle {
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  width: 120px;
+  height: 120px;
+  background: url('https://play.pokemonshowdown.com/sprites/gen5-effects/shiny.gif') no-repeat center/contain;
+  pointer-events: none;
+  animation: sparkleAnim 1s forwards;
+}
+@keyframes sparkleAnim {
+  0% {opacity: 0;}
+  10% {opacity: 1;}
+  100% {opacity: 0;}
+}
+
+.info-card {
+  position: fixed;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  width: 300px;
+  background: #111;
+  border: 4px solid #e0c068;
+  padding: 15px;
+  color: white;
+  font-size: 10px;
+  display: none;
+}
+.info-card h3 {
+  margin-top: 0;
+  color: #e0c068;
+}
 </style>
 </head>
 <body>
-<header>POKÉMMO — Trainer ShinyDex</header>
-<main>
 
-  <div class="trainer-wrapper" role="list">
-
-    <section class="trainer-section" id="chels-section" aria-label="Chels's shinies">
-      <h2>Chels</h2>
-      <div class="shiny-count" id="chels-shiny-count">ShinyDex: 0</div>
-      <div class="pokedex-grid" id="chels-grid"></div>
-    </section>
-
-    <section class="trainer-section" id="tuna-section" aria-label="Tuna's shinies">
-      <h2>Tuna</h2>
-      <div class="shiny-count" id="tuna-shiny-count">ShinyDex: 0</div>
-      <div class="pokedex-grid" id="tuna-grid"></div>
-    </section>
-
+<div id="intro" class="screen">
+  <div class="trainer" onclick="showDex('tuna')">
+    <img src="tuna_same_height.jpg" alt="Tuna">
+    <div class="trainer-name">Tuna</div>
   </div>
+  <div class="trainer" onclick="showDex('chels')">
+    <img src="chels_same_height.jpg" alt="Chels">
+    <div class="trainer-name">Chels</div>
+  </div>
+</div>
 
-  <section id="info-panel" aria-live="polite" aria-atomic="true" aria-label="Selected shiny info">
-    <img id="info-sprite" src="" alt="Selected shiny sprite" />
-    <div id="info-name">Hover or focus on a shiny</div>
-    <div id="info-num"></div>
-    <div id="info-trainer"></div>
-    <div id="info-details">No shiny selected</div>
-  </section>
+<div id="tuna-dex" class="pokedex hidden"></div>
+<div id="chels-dex" class="pokedex hidden"></div>
 
-</main>
+<div id="info-card" class="info-card"></div>
 
 <script>
-const shinies = [
-  // Chels
-  {
-    file: "girafarig",
-    name: "Girafarig",
-    dex: 203,
-    trainer: "Chels",
-    details: `Met at Iv. 24 in Route 43
-after 4210 encounter on 11/07/2025 22:27:13
-Likes Spicy food.
-Dislikes Dry food.
-Likes to thrash about.`
-  },
-  {
-    file: "mankey",
-    name: "Mankey",
-    dex: 56,
-    trainer: "Chels",
-    details: `Met at Iv. 21 in Route 42
-after 3562 encounter on 12/07/2025 23:20:40
-Likes Sour food.
-Dislikes Sweet food.
-Mischievous.`
-  },
-  {
-    file: "magikarp",
-    name: "Magikarp",
-    dex: 129,
-    trainer: "Chels",
-    details: `Met at Iv. 33 in Dragon's Den on 10/06/2025
-02:51:00
-Likes Sweet food.
-Dislikes Bitter food.
-Somewhat vain.`
-  },
-  {
-  file: "tailow",
-  name: "Tailow",
-  dex: 276,
-  trainer: "Chels",
-  details: `Chico! A gift from Tuna because he’s so sweet ♡`
-},
-
-  // Tuna
-  {
-    file: "lilligant",
-    name: "Lilligant",
-    dex: 549,
-    trainer: "Tuna",
-    details: `Met at lv. 19 in Lostlorn Forest after 5165 encounter on
-8/10/25 6:04:12 PM
-No flavor preferences.
-Often dozes off.`
-  },
-  {
-    file: "whirlipede",
-    name: "Whirlipede",
-    dex: 544,
-    trainer: "Tuna",
-    details: `Met at Iv. 18 in Lostlorn Forest after 4553 encounter on 8/9/25 8:49:44 PM
-Likes Dry food.
-Dislikes Sour food.
-Mischievous.`
-  },
-  {
-    file: "scolipede",
-    name: "Scolipede",
-    dex: 545,
-    trainer: "Tuna",
-    details: `Met at Iv. 18 in Lostlorn Forest after 11750 encounter on
-8/8/25 9:15:51 PM
-No flavor preferences.
-Likes to thrash about.`
-  },
-  {
-    file: "aggron",
-    name: "Aggron",
-    dex: 306,
-    trainer: "Tuna",
-    details: `Met at Iv. 38 in VICTORY ROAD
-after 17193 encounter on
-7/15/25 8:37:35 AM
-Likes Bitter food.
-Dislikes Dry food.
-Likes to thrash about.`
-  },
-  {
-    file: "haxorus",
-    name: "Haxorus",
-    dex: 612,
-    trainer: "Tuna",
-    details: `Met at lv. 26 in Guidance
-Chamber
-after 6751 encounter on
-7/12/25 9:22:38 PM
-Likes Sweet food.
-Dislikes Bitter food.
-Mischievous.`
-  },
-  {
-    file: "joltik",
-    name: "Joltik",
-    dex: 595,
-    trainer: "Tuna",
-    details: `Met at Iv. 22 in Chargestone
-Cave
-after 11974 encounter on
-7/27/25 12:12:36 PM
-Likes Sour food.
-Dislikes Spicy food.
-Likes to thrash about.`
-  },
-  {
-    file: "weezing",
-    name: "Weezing",
-    dex: 110,
-    trainer: "Tuna",
-    details: `Met in Burned Tower after 
-35861 encounter on
-8/3/25 6:50:47 PM
-Likes Dry food.
-Dislikes Sour food.
-Often dozes off.`
-  },
-  {
-    file: "golurk",
-    name: "Golurk",
-    dex: 623,
-    trainer: "Tuna",
-    details: `Met at Iv. 29 in Dragonspiral
-Tower
-after 7205 encounter on
-7/11/25 7:44:35 PM
-Likes Bitter food.
-Dislikes Sweet food.
-Often dozes off.
-Hidden Ability unlocked.`
-  },
-  {
-    file: "psyduck",
-    name: "Psyduck",
-    dex: 54,
-    trainer: "Tuna",
-    details: `Met on 6/15/25 
-4:44:17 PM
-Likes Dry food.
-Dislikes Bitter food.
-Likes to thrash about.`
-  },
-  {
-    file: "dusclops",
-    name: "Dusclops",
-    dex: 356,
-    trainer: "Tuna",
-    details: `Met at Mt. Pyre.
-8/2/25 10:33:47 AM
-Likes Spicy food.
-Dislikes Dry food.
-Often dozes off.
-Hidden Ability unlocked.`
-  },
-  {
-    file: "octillery",
-    name: "Octillery",
-    dex: 224,
-    trainer: "Tuna",
-    details: `Met at Battle Frontier
-after 54017 encounter on
-8/8/25 9:01:47 PM
-Likes Sweet food.
-Dislikes Sour food.
-Mischievous.`
-  },
-  {
-    file: "venipede",
-    name: "Venipede",
-    dex: 543,
-    trainer: "Tuna",
-    details: `Met at Iv. 18 in Lostlorn Forest after 3819 encounter on
-8/12/25 11:24:16 AM
-No flavor preferences.
-Alert to sounds.`
-  },
+const tunaShinies = [
+  {name:'Lilligant', dex:549, img:'https://img.pokemondb.net/sprites/black-white/anim/shiny/lilligant.gif', info:`Met at lv. 19 in Lostlorn Forest after 5165 encounters on 8/10/25 6:04:12 PM<br>No flavor preferences.<br>Often dozes off.`},
+  {name:'Whirlipede', dex:544, img:'https://img.pokemondb.net/sprites/black-white/anim/shiny/whirlipede.gif', info:`Met at lv. 18 in Lostlorn Forest after 4553 encounters on 8/9/25 8:49:44 PM<br>Likes Dry food.<br>Dislikes Sour food.<br>Mischievous.`},
+  {name:'Scolipede', dex:545, img:'https://img.pokemondb.net/sprites/black-white/anim/shiny/scolipede.gif', info:`Met at lv. 18 in Lostlorn Forest after 11750 encounters on 8/8/25 9:15:51 PM<br>No flavor preferences.<br>Likes to thrash about.`},
+  {name:'Aggron', dex:306, img:'https://img.pokemondb.net/sprites/black-white/anim/shiny/aggron.gif', info:`Met at lv. 38 in Victory Road after 17193 encounters on 7/15/25 8:37:35 AM<br>Likes Bitter food.<br>Dislikes Dry food.<br>Likes to thrash about.`},
+  {name:'Haxorus', dex:612, img:'https://img.pokemondb.net/sprites/black-white/anim/shiny/haxorus.gif', info:`Met at lv. 26 in Guidance Chamber after 6751 encounters on 7/12/25 9:22:38 PM<br>Likes Sweet food.<br>Dislikes Bitter food.<br>Mischievous.`},
+  {name:'Joltik', dex:595, img:'https://img.pokemondb.net/sprites/black-white/anim/shiny/joltik.gif', info:`Met at lv. 22 in Chargestone Cave after 11974 encounters on 7/27/25 12:12:36 PM<br>Likes Sour food.<br>Dislikes Spicy food.<br>Likes to thrash about.`},
+  {name:'Weezing', dex:110, img:'https://img.pokemondb.net/sprites/black-white/anim/shiny/weezing.gif', info:`Met in Burned Tower after 35861 encounters on 8/3/25 6:50:47 PM<br>Likes Dry food.<br>Dislikes Sour food.<br>Often dozes off.`},
+  {name:'Golurk', dex:623, img:'https://img.pokemondb.net/sprites/black-white/anim/shiny/golurk.gif', info:`Met at lv. 29 in Dragonspiral Tower after 7205 encounters on 7/11/25 7:44:35 PM<br>Likes Bitter food.<br>Dislikes Sweet food.<br>Often dozes off.<br>Hidden Ability unlocked.`},
+  {name:'Psyduck', dex:54, img:'https://img.pokemondb.net/sprites/black-white/anim/shiny/psyduck.gif', info:`Met on 6/15/25 4:44:17 PM<br>Likes Dry food.<br>Dislikes Bitter food.<br>Likes to thrash about.`},
+  {name:'Dusclops', dex:356, img:'https://img.pokemondb.net/sprites/black-white/anim/shiny/dusclops.gif', info:`Met at Mt. Pyre on 8/2/25 10:33:47 AM<br>Likes Spicy food.<br>Dislikes Dry food.<br>Often dozes off.<br>Hidden Ability unlocked.`}
 ];
 
-function getFrontSpriteUrl(poke){
-  if(poke.file === 'tailow'){
-    // Use the custom shiny animated Tailow gif from projectpokemon.org
-    return 'https://projectpokemon.org/images/shiny-sprite/taillow.gif';
-  }
-  return `https://img.pokemondb.net/sprites/black-white/anim/shiny/${poke.file}.gif`;
-}
+const chelsShinies = [
+  {name:'Girafarig', dex:203, img:'https://img.pokemondb.net/sprites/black-white/anim/shiny/girafarig.gif', info:`Met at lv. 24 in Route 43 after 4210 encounters on 11/07/25 22:27:13<br>Likes Spicy food.<br>Dislikes Dry food.<br>Likes to thrash about.`},
+  {name:'Mankey', dex:56, img:'https://img.pokemondb.net/sprites/black-white/anim/shiny/mankey.gif', info:`Met at lv. 21 in Route 42 after 3562 encounters on 12/07/25 23:20:40<br>Likes Sour food.<br>Dislikes Sweet food.<br>Mischievous.`},
+  {name:'Magikarp', dex:129, img:'https://img.pokemondb.net/sprites/black-white/anim/shiny/magikarp.gif', info:`Met at lv. 33 in Dragon's Den on 10/06/25 02:51:00<br>Likes Sweet food.<br>Dislikes Bitter food.<br>Somewhat vain.`}
+];
 
-function buildTrainerGrid(trainerName, containerId, countId){
-  const container = document.getElementById(containerId);
-  const countEl = document.getElementById(countId);
-  const filtered = shinies.filter(p => p.trainer === trainerName);
-  countEl.textContent = `ShinyDex: ${filtered.length}`;
-  filtered.sort((a,b) => a.dex - b.dex);
-
-  container.innerHTML = '';
-
-  filtered.forEach(p=>{
-    const card = document.createElement('button');
-    card.className = 'poke-card';
-    card.setAttribute('aria-label', `${p.name} #${p.dex} caught by ${p.trainer}`);
-    card.type = 'button';
-
-    const num = document.createElement('div');
-    num.className = 'dexnum';
-    num.textContent = `#${String(p.dex).padStart(3,'0')}`;
-
-    const name = document.createElement('div');
-    name.className = 'pokename';
-    name.textContent = p.name;
-
-    const img = document.createElement('img');
-    img.className = 'sprite';
-    img.src = getFrontSpriteUrl(p);
-    img.alt = `${p.name} shiny sprite`;
-
-    card.appendChild(num);
-    card.appendChild(img);
-    card.appendChild(name);
-    container.appendChild(card);
-
-    card.addEventListener('mouseenter', () => updateInfoPanel(p));
-    card.addEventListener('focus', () => updateInfoPanel(p));
+function showDex(trainer) {
+  document.getElementById('intro').classList.add('hidden');
+  document.getElementById(trainer+'-dex').classList.remove('hidden');
+  const dexContainer = document.getElementById(trainer+'-dex');
+  dexContainer.innerHTML = `<h1>${trainer.charAt(0).toUpperCase()+trainer.slice(1)}'s Shinies</h1><div class="dex-grid"></div>`;
+  const grid = dexContainer.querySelector('.dex-grid');
+  const shinies = trainer === 'tuna' ? tunaShinies : chelsShinies;
+  shinies.sort((a,b) => a.dex - b.dex).forEach(pkmn => {
+    const entry = document.createElement('div');
+    entry.className = 'dex-entry';
+    entry.innerHTML = `<img src="${pkmn.img}" alt="${pkmn.name}">`;
+    entry.addEventListener('mouseenter', () => showInfo(pkmn));
+    entry.addEventListener('mouseleave', hideInfo);
+    entry.addEventListener('mouseenter', sparkleOnce);
+    grid.appendChild(entry);
   });
 }
 
-function updateInfoPanel(poke){
-  const infoSprite = document.getElementById('info-sprite');
-  const infoName = document.getElementById('info-name');
-  const infoNum = document.getElementById('info-num');
-  const infoTrainer = document.getElementById('info-trainer');
-  const infoDetails = document.getElementById('info-details');
-
-  infoSprite.src = getFrontSpriteUrl(poke);
-  infoSprite.alt = `${poke.name} shiny sprite`;
-  infoName.textContent = poke.name;
-  infoNum.textContent = `#${String(poke.dex).padStart(3,'0')}`;
-  infoTrainer.textContent = `Trainer: ${poke.trainer}`;
-  infoDetails.textContent = poke.details || "No additional info available";
+function showInfo(pkmn) {
+  const card = document.getElementById('info-card');
+  card.innerHTML = `<h3>#${pkmn.dex} ${pkmn.name}</h3><p>${pkmn.info}</p>`;
+  card.style.display = 'block';
 }
-
-buildTrainerGrid('Chels', 'chels-grid', 'chels-shiny-count');
-buildTrainerGrid('Tuna', 'tuna-grid', 'tuna-shiny-count');
+function hideInfo() {
+  document.getElementById('info-card').style.display = 'none';
+}
+function sparkleOnce(e) {
+  const s = document.createElement('div');
+  s.className = 'sparkle';
+  e.currentTarget.appendChild(s);
+  setTimeout(() => s.remove(), 1000);
+}
 </script>
 </body>
 </html>
