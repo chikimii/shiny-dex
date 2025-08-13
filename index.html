@@ -3,265 +3,163 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Tuna & Chels — PokeMMO Trainer ShinyDex</title>
-<link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet" />
+<title>Tuna & Chels — PokeMMO ShinyDex</title>
+
+<link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+
 <style>
-  :root {
+  :root{
     --bg:#080808;
     --panel:#111213;
+    --accent-kanto: #d32f2f;
+    --accent-johto: #b8860b;
+    --accent-hoenn: #208f5a;
+    --accent-sinnoh: #c06aa5;
+    --accent-unova: linear-gradient(90deg,#444 #ddd);
     --muted:#c7cbd1;
+    --glass: rgba(255,255,255,0.02);
   }
-  * { box-sizing: border-box; }
-  body {
-    margin: 0; background: linear-gradient(180deg,#060606,#0b0b0b);
-    font-family: 'VT323', monospace;
-    color: var(--muted);
-  }
-  header {
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0;background:linear-gradient(180deg,#060606,#0b0b0b);color:var(--muted);font-family: 'VT323', monospace; -webkit-font-smoothing:antialiased;}
+  header{
     background: linear-gradient(90deg,#b71c1c,#ff5252);
-    padding: 1.6rem;
-    font-size: 2.4rem;
-    color: #fff;
-    text-align: center;
-    border-radius: 0 0 12px 12px;
-    margin-bottom: 1rem;
+    padding:1.6rem 1rem; text-align:center; font-size:2.4rem; color:#fff; border-radius:0 0 12px 12px; margin-bottom:1rem;
     text-shadow: 0 0 12px rgba(255,82,82,0.5);
   }
-  main {
-    max-width: 1400px;
-    margin: 0 auto 3rem;
-    display: flex;
-    gap: 1.6rem;
-    padding: 0 1rem;
+
+  main{
+    max-width:1400px; margin:0 auto 3rem; display:flex; gap:1.6rem; padding:0 1rem;
   }
-  #left-panel {
-    flex: 3 1 0;
-    background: var(--panel);
-    border-radius: 14px;
-    padding: 1.6rem;
-    box-shadow: 0 6px 24px rgba(0,0,0,0.6);
-    min-height: 60vh;
-    overflow-y: auto;
+
+  /* Left: pokedex grid */
+  #left-panel{
+    flex: 3 1 0; background:var(--panel); border-radius:14px; padding:1.6rem; box-shadow: 0 6px 24px rgba(0,0,0,0.6);
+    min-height:60vh;
   }
-  #right-panel {
-    flex: 1 1 320px;
-    background: linear-gradient(180deg,#131416,#0f1113);
-    border-radius: 14px;
-    padding: 1.4rem;
-    box-shadow: 0 6px 22px rgba(0,0,0,0.6);
-    min-width: 280px;
-    position: relative;
+
+  /* Right: side card */
+  #right-panel{
+    flex: 1 1 320px; background:linear-gradient(180deg,#131416,#0f1113); border-radius:14px; padding:1.4rem; box-shadow:0 6px 22px rgba(0,0,0,0.6);
+    min-width:280px; position:relative;
   }
-  .trainer-card {
-    border: 2px solid rgba(255,255,255,0.05);
-    border-radius: 12px;
-    margin-bottom: 1rem;
-    background: linear-gradient(180deg,rgba(255,255,255,0.01),rgba(0,0,0,0.03));
+  #right-panel .trainer{
+    display:flex; align-items:center; gap:12px; margin-bottom:12px;
   }
-  .trainer-header {
-    cursor: pointer;
-    padding: 12px 16px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-weight: 700;
-    font-size: 1.3rem;
-    color: #ff6b6b;
-    user-select: none;
-    border-radius: 12px;
-    background: linear-gradient(90deg,#ff6b6b,#ff9494);
-    text-shadow: 0 0 6px rgba(255,100,100,0.8);
+  .trainer img{ width:64px; height:96px; image-rendering: pixelated; border:2px solid rgba(255,255,255,0.06); border-radius:8px; }
+  #shinyCount{font-size:0.95rem;color:#ffd7d7}
+
+  /* generation header */
+  .gen-header{
+    display:flex; align-items:center; justify-content:space-between; gap:10px; padding:8px 12px; border-radius:10px;
+    margin:10px 0; cursor:pointer; user-select:none;
   }
-  .trainer-header .toggle-icon {
-    margin-left: auto;
-    transition: transform 0.3s ease;
+  .gen-title{ font-size:1.05rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; }
+  .gen-toggle{ transition: transform .18s ease; }
+
+  .gen-list{ overflow:hidden; transition: height .28s ease; }
+
+  /* grid */
+  .pokedex-grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px,1fr));
+    gap:12px;
   }
-  .trainer-header.collapsed .toggle-icon {
-    transform: rotate(-90deg);
+
+  .poke-card{
+    background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.02));
+    border-radius:12px; padding:10px; text-align:center; cursor:pointer; border:2px solid rgba(255,255,255,0.03);
+    transition: transform .18s ease, box-shadow .18s ease;
+    position:relative; overflow:visible;
   }
-  .trainer-shiny-list {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.4s ease;
-    padding: 0 16px;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(130px,1fr));
-    gap: 12px;
+  .poke-card:focus, .poke-card:hover{ transform: translateY(-6px); box-shadow: 0 14px 40px rgba(0,0,0,0.6); outline:none; z-index:2 }
+
+  .dexnum{ font-size:0.9rem; color:#ffb6b6; font-weight:700; margin-bottom:4px; }
+  .pokename{ font-size:1.2rem; color:#ff6b6b; margin-bottom:8px; text-transform:capitalize; }
+  .sprite{ width:96px; height:96px; image-rendering: pixelated; display:block; margin:0 auto 8px; }
+
+  /* sparkle overlay (hidden by default) */
+  .sparkle-overlay{ position:absolute; inset:0; pointer-events:none; opacity:0; transition: opacity .12s ease; }
+  .sparkle-overlay.play{ opacity:1; }
+
+  /* star */
+  .star{
+    position:absolute; width:18px; height:18px; background: radial-gradient(circle at 30% 30%, #fff 0%, rgba(255,255,255,0.9) 10%, rgba(255,215,0,0.8) 30%, rgba(255,215,0,0.2) 60%, rgba(255,215,0,0) 100%);
+    transform: rotate(25deg) scale(0);
+    border-radius:3px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6));
+    animation: starpop .8s forwards;
   }
-  .trainer-shiny-list.expanded {
-    max-height: 1500px;
-    padding-top: 12px;
-    padding-bottom: 12px;
+  @keyframes starpop{
+    0%{ transform: scale(0) translateY(6px); opacity:0 }
+    10%{ transform: scale(1.05) translateY(-6px); opacity:1 }
+    50%{ transform: scale(.9) translateY(-12px); opacity:.9 }
+    100%{ transform: scale(.6) translateY(6px); opacity:0 }
   }
-  .poke-card {
-    background: linear-gradient(180deg,rgba(255,255,255,0.01),rgba(0,0,0,0.02));
-    border-radius: 12px;
-    padding: 8px;
-    text-align: center;
-    cursor: pointer;
-    border: 2px solid transparent;
-    transition: border-color 0.2s ease, transform 0.2s ease;
-    user-select: none;
+
+  /* side card contents */
+  #infoSprite{ width:160px; height:160px; image-rendering: pixelated; display:block; margin:0 auto 12px; }
+  #infoName{ font-size:2rem; color:#ff6b6b; text-align:center; text-transform:capitalize; margin-bottom:6px; }
+  #infoNum{ text-align:center; color:#ffb6b6; font-weight:700; margin-bottom:8px;}
+  .info-row{ display:flex; gap:8px; align-items:center; justify-content:center; margin-bottom:8px; }
+  .chip{ background:rgba(255,255,255,0.03); padding:6px 10px; border-radius:8px; font-size:0.9rem; color:var(--muted); }
+
+  .info-block{ background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.02)); padding:10px; border-radius:10px; margin-top:8px; color:var(--muted); font-size:0.95rem; line-height:1.25; }
+
+  /* show back sprite toggle */
+  .mini-row{ display:flex; gap:8px; justify-content:center; margin-top:10px; }
+  .btn{ background:#222; padding:6px 10px; border-radius:8px; cursor:pointer; border:1px solid rgba(255,255,255,0.03); }
+
+  /* desktop wider tweaks */
+  @media(min-width:1100px){
+    main{ padding:0 2rem; }
+    .pokedex-grid{ grid-template-columns: repeat(auto-fill, minmax(160px,1fr)); }
+    #right-panel{ min-width:360px; }
   }
-  .poke-card:hover, .poke-card.selected {
-    border-color: #ff6b6b;
-    transform: translateY(-6px);
+
+  /* responsive stack */
+  @media(max-width:900px){
+    main{ flex-direction:column; padding:0 12px; }
+    #right-panel{ order:-1; }
   }
-  .poke-card .dexnum {
-    font-size: 0.9rem;
-    font-weight: 700;
-    color: #ffb6b6;
-    margin-bottom: 4px;
-  }
-  .poke-card .pokename {
-    font-size: 1.1rem;
-    color: #ff6b6b;
-    margin-bottom: 6px;
-    text-transform: capitalize;
-  }
-  .sprite {
-    width: 96px;
-    height: 96px;
-    image-rendering: pixelated;
-    margin: 0 auto 6px;
-  }
-  /* right panel */
-  #trainerName {
-    font-weight: 700;
-    font-size: 1.4rem;
-    margin-bottom: 4px;
-    color: #ff6b6b;
-  }
-  #shinyCount {
-    font-size: 0.9rem;
-    color: #ffb6b6;
-    margin-bottom: 14px;
-  }
-  #infoSprite {
-    width: 160px;
-    height: 160px;
-    image-rendering: pixelated;
-    margin: 0 auto 12px;
-    display: block;
-  }
-  #infoName {
-    font-size: 2rem;
-    color: #ff6b6b;
-    text-align: center;
-    text-transform: capitalize;
-    margin-bottom: 6px;
-  }
-  #infoNum {
-    text-align: center;
-    color: #ffb6b6;
-    font-weight: 700;
-    margin-bottom: 12px;
-  }
-  .info-row {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    margin-bottom: 12px;
-  }
-  .chip {
-    background: rgba(255,255,255,0.03);
-    padding: 6px 10px;
-    border-radius: 8px;
-    font-size: 0.9rem;
-    color: var(--muted);
-  }
-  .info-block {
-    background: linear-gradient(180deg,rgba(255,255,255,0.01),rgba(0,0,0,0.02));
-    padding: 12px;
-    border-radius: 10px;
-    font-size: 0.95rem;
-    line-height: 1.3;
-  }
-  hr {
-    border: none;
-    border-top: 1px solid rgba(255,255,255,0.06);
-    margin: 10px 0;
-  }
-  .mini-row {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    margin-top: 14px;
-  }
-  .btn {
-    background: #222;
-    padding: 8px 12px;
-    border-radius: 8px;
-    cursor: pointer;
-    border: 1px solid rgba(255,255,255,0.03);
-    user-select: none;
-    color: var(--muted);
-  }
-  .btn:hover {
-    background: #333;
-  }
-  /* trainer avatar in right panel */
-  #trainerAvatar {
-    width: 64px;
-    height: 96px;
-    image-rendering: pixelated;
-    border: 2px solid rgba(255,255,255,0.06);
-    border-radius: 8px;
-    margin-right: 12px;
-  }
-  .trainer-header img {
-    width: 48px;
-    height: 72px;
-    image-rendering: pixelated;
-    border-radius: 6px;
-    border: 2px solid rgba(255,255,255,0.08);
-  }
-  .trainer-header .shiny-count {
-    margin-left: auto;
-    font-weight: 700;
-    color: #fff;
-    text-shadow: 0 0 4px #ff6b6b;
-    font-size: 1.1rem;
-  }
+
 </style>
 </head>
 <body>
-
 <header>POKÉMMO — Trainer ShinyDex</header>
 
 <main>
-  <section id="left-panel" aria-label="Trainer shiny listing">
-    <div id="trainer-container"></div>
+  <section id="left-panel" aria-label="Pokedex listing">
+    <!-- Generation groups will be injected here -->
+    <div id="pokedex-container"></div>
   </section>
 
-  <aside id="right-panel" aria-live="polite" aria-atomic="true">
-    <div style="display:flex; align-items:center; margin-bottom: 16px;">
-      <img id="trainerAvatar" src="https://archives.pokemmo.eu/images/avatarMale_3.png" alt="Trainer avatar" />
+  <aside id="right-panel" aria-live="polite">
+    <div class="trainer">
+      <img id="trainerAvatar" src="https://archives.pokemmo.eu/images/avatarMale_3.png" alt="Tuna avatar" />
       <div>
-        <div id="trainerName">Trainer</div>
+        <div id="trainerName">Tuna</div>
         <div id="shinyCount">ShinyDex: 0</div>
       </div>
     </div>
 
-    <img id="infoSprite" src="" alt="Selected shiny sprite" />
-    <div id="infoName">—</div>
-    <div id="infoNum">#---</div>
+    <img id="infoSprite" src="https://img.pokemondb.net/sprites/black-white/anim/shiny/octillery.gif" alt="info sprite" />
+    <div id="infoName">Octillery</div>
+    <div id="infoNum">#224</div>
 
     <div class="info-row">
-      <div class="chip" id="infoTrainer">Trainer: —</div>
+      <div class="chip" id="infoTrainer">Trainer: Tuna</div>
       <div class="chip" id="infoLevel">Lv. —</div>
     </div>
 
     <div class="info-block" id="caughtInfo">
       <strong>Caught:</strong>
-      <div id="caughtText">—</div>
+      <div id="caughtText">Met at lv. — in — after — encounters on —</div>
 
-      <hr>
+      <hr style="opacity:.06;margin:8px 0">
 
       <strong>Preferences</strong>
-      <div id="prefs">—</div>
+      <div id="prefs">Likes: — · Dislikes: — · Personality: —</div>
 
-      <hr>
+      <hr style="opacity:.06;margin:8px 0">
 
       <strong>Notes</strong>
       <div id="notes">—</div>
@@ -275,199 +173,511 @@
 </main>
 
 <script>
-  // Data for shinies
-  // For sprite URLs, using PokémonDB shiny animated sprites as fallback
-  // Trainer avatar URLs (simplified)
-  const trainersData = {
-    "Chels": {
-      avatar: "https://archives.pokemmo.eu/images/avatarFemale_3.png"
-    },
-    "Tuna": {
-      avatar: "https://archives.pokemmo.eu/images/avatarMale_3.png"
-    }
-  };
-
-  const shinies = [
-    // Chels
-    {
-      file: "girafarig",
-      name: "Girafarig",
-      dex: 203,
-      trainer: "Chels",
+/*
+  Data block - edit only here to change or add shinies
+  file: base filename (lowercase) -> used to load local assets if present
+  frontLocal/backLocal/cries point to local assets if you upload them to assets/...
+  The script will fall back to PokéDB animated shiny GIFs if local files are missing.
+*/
+const shinies = [
+  // Chels
+  {
+    file: "girafarig",
+    name: "Girafarig",
+    dex: 203,
+    trainer: "Chels",
+    gen: 2,
+    frontLocal: "assets/sprites/front/girafarig.gif",
+    backLocal: "assets/sprites/back/girafarig.gif",
+    cryLocal: "assets/cries/girafarig.ogg",
+    caught: {
       level: 24,
       place: "Route 43",
       encounters: 4210,
-      datetime: "2025-07-11 22:27:13",
-      prefs: { likes: "Spicy food", dislikes: "Dry food", personality: "Likes to thrash about" },
-      notes: "",
+      datetime: "2025-07-11 22:27:13"
     },
-    {
-      file: "mankey",
-      name: "Mankey",
-      dex: 56,
-      trainer: "Chels",
+    prefs: { likes: "Spicy food", dislikes: "Dry food", personality: "Likes to thrash about" },
+    notes: ""
+  },
+  {
+    file: "mankey",
+    name: "Mankey",
+    dex: 56,
+    trainer: "Chels",
+    gen: 1,
+    frontLocal: "assets/sprites/front/mankey.gif",
+    backLocal: "assets/sprites/back/mankey.gif",
+    cryLocal: "assets/cries/mankey.ogg",
+    caught: {
       level: 21,
       place: "Route 42",
       encounters: 3562,
-      datetime: "2025-07-12 23:20:40",
-      prefs: { likes: "Sour food", dislikes: "Sweet food", personality: "Mischievous" },
-      notes: "",
+      datetime: "2025-07-12 23:20:40"
     },
-    {
-      file: "magikarp",
-      name: "Magikarp",
-      dex: 129,
-      trainer: "Chels",
+    prefs: { likes: "Sour food", dislikes: "Sweet food", personality: "Mischievous" },
+    notes: ""
+  },
+  {
+    file: "magikarp",
+    name: "Magikarp",
+    dex: 129,
+    trainer: "Chels",
+    gen: 1,
+    frontLocal: "assets/sprites/front/magikarp.gif",
+    backLocal: "assets/sprites/back/magikarp.gif",
+    cryLocal: "assets/cries/magikarp.ogg",
+    caught: {
       level: 33,
       place: "Dragon's Den",
       encounters: null,
-      datetime: "2025-06-10 02:51:00",
-      prefs: { likes: "Sweet food", dislikes: "Bitter food", personality: "Somewhat vain" },
-      notes: "",
+      datetime: "2025-06-10 02:51:00"
     },
-    // Tuna
-    {
-      file: "lilligant",
-      name: "Lilligant",
-      dex: 549,
-      trainer: "Tuna",
+    prefs: { likes: "Sweet food", dislikes: "Bitter food", personality: "Somewhat vain" },
+    notes: ""
+  },
+
+  // Tuna's list (from your message)
+  {
+    file: "lilligant",
+    name: "Lilligant",
+    dex: 549,
+    trainer: "Tuna",
+    gen: 5,
+    frontLocal: "assets/sprites/front/lilligant.gif",
+    backLocal: "assets/sprites/back/lilligant.gif",
+    cryLocal: "assets/cries/lilligant.ogg",
+    caught: {
       level: 19,
       place: "Lostlorn Forest",
       encounters: 5165,
-      datetime: "2025-08-10 18:04:12",
-      prefs: { likes: "—", dislikes: "—", personality: "Often dozes off" },
-      notes: "",
+      datetime: "2025-08-10 18:04:12"
     },
-    {
-      file: "whirlipede",
-      name: "Whirlipede",
-      dex: 544,
-      trainer: "Tuna",
+    prefs: { likes: "—", dislikes: "—", personality: "Often dozes off" },
+    notes: ""
+  },
+  {
+    file: "whirlipede",
+    name: "Whirlipede",
+    dex: 544,
+    trainer: "Tuna",
+    gen: 5,
+    frontLocal: "assets/sprites/front/whirlipede.gif",
+    backLocal: "assets/sprites/back/whirlipede.gif",
+    cryLocal: "assets/cries/whirlipede.ogg",
+    caught: {
       level: 18,
       place: "Lostlorn Forest",
       encounters: 4553,
-      datetime: "2025-08-09 20:49:44",
-      prefs: { likes: "Dry food", dislikes: "Sour food", personality: "Mischievous" },
-      notes: "",
+      datetime: "2025-08-09 20:49:44"
     },
-    {
-      file: "scolipede",
-      name: "Scolipede",
-      dex: 545,
-      trainer: "Tuna",
+    prefs: { likes: "Dry food", dislikes: "Sour food", personality: "Mischievous" },
+    notes: ""
+  },
+  {
+    file: "scolipede",
+    name: "Scolipede",
+    dex: 545,
+    trainer: "Tuna",
+    gen: 5,
+    frontLocal: "assets/sprites/front/scolipede.gif",
+    backLocal: "assets/sprites/back/scolipede.gif",
+    cryLocal: "assets/cries/scolipede.ogg",
+    caught: {
       level: 18,
       place: "Lostlorn Forest",
       encounters: 11750,
-      datetime: "2025-08-08 21:15:51",
-      prefs: { likes: "—", dislikes: "—", personality: "Likes to thrash about" },
-      notes: "",
+      datetime: "2025-08-08 21:15:51"
     },
-    {
-      file: "aggron",
-      name: "Aggron",
-      dex: 306,
-      trainer: "Tuna",
+    prefs: { likes: "—", dislikes: "—", personality: "Likes to thrash about" },
+    notes: ""
+  },
+  {
+    file: "aggron",
+    name: "Aggron",
+    dex: 306,
+    trainer: "Tuna",
+    gen: 3,
+    frontLocal: "assets/sprites/front/aggron.gif",
+    backLocal: "assets/sprites/back/aggron.gif",
+    cryLocal: "assets/cries/aggron.ogg",
+    caught: {
       level: 38,
       place: "Victory Road",
       encounters: 17193,
-      datetime: "2025-07-15 08:37:35",
-      prefs: { likes: "Bitter food", dislikes: "Dry food", personality: "Likes to thrash about" },
-      notes: "",
+      datetime: "2025-07-15 08:37:35"
     },
-    {
-      file: "haxorus",
-      name: "Haxorus",
-      dex: 612,
-      trainer: "Tuna",
+    prefs: { likes: "Bitter food", dislikes: "Dry food", personality: "Likes to thrash about" },
+    notes: ""
+  },
+  {
+    file: "haxorus",
+    name: "Haxorus",
+    dex: 612,
+    trainer: "Tuna",
+    gen: 5,
+    frontLocal: "assets/sprites/front/haxorus.gif",
+    backLocal: "assets/sprites/back/haxorus.gif",
+    cryLocal: "assets/cries/haxorus.ogg",
+    caught: {
       level: 26,
       place: "Guidance Chamber",
       encounters: 6751,
-      datetime: "2025-07-12 21:22:38",
-      prefs: { likes: "Sweet food", dislikes: "Bitter food", personality: "Mischievous" },
-      notes: "",
+      datetime: "2025-07-12 21:22:38"
     },
-    {
-      file: "joltik",
-      name: "Joltik",
-      dex: 595,
-      trainer: "Tuna",
+    prefs: { likes: "Sweet food", dislikes: "Bitter food", personality: "Mischievous" },
+    notes: ""
+  },
+  {
+    file: "joltik",
+    name: "Joltik",
+    dex: 595,
+    trainer: "Tuna",
+    gen: 5,
+    frontLocal: "assets/sprites/front/joltik.gif",
+    backLocal: "assets/sprites/back/joltik.gif",
+    cryLocal: "assets/cries/joltik.ogg",
+    caught: {
       level: 22,
       place: "Chargestone Cave",
       encounters: 11974,
-      datetime: "2025-07-27 12:12:36",
-      prefs: { likes: "Sour food", dislikes: "Spicy food", personality: "Likes to thrash about" },
-      notes: "",
+      datetime: "2025-07-27 12:12:36"
     },
-    {
-      file: "weezing",
-      name: "Weezing",
-      dex: 110,
-      trainer: "Tuna",
-      level: 39,
-      place: "Venusaur's Garden",
-      encounters: 8642,
-      datetime: "2025-07-30 11:14:22",
-      prefs: { likes: "Bitter food", dislikes: "Sweet food", personality: "Grumpy" },
-      notes: "",
+    prefs: { likes: "Sour food", dislikes: "Spicy food", personality: "Likes to thrash about" },
+    notes: ""
+  },
+  {
+    file: "weezing",
+    name: "Weezing",
+    dex: 110,
+    trainer: "Tuna",
+    gen: 1,
+    frontLocal: "assets/sprites/front/weezing.gif",
+    backLocal: "assets/sprites/back/weezing.gif",
+    cryLocal: "assets/cries/weezing.ogg",
+    caught: {
+      level: null,
+      place: "Burned Tower",
+      encounters: 35861,
+      datetime: "2025-08-03 18:50:47"
+    },
+    prefs: { likes: "Dry food", dislikes: "Sour food", personality: "Often dozes off" },
+    notes: ""
+  },
+  {
+    file: "golurk",
+    name: "Golurk",
+    dex: 623,
+    trainer: "Tuna",
+    gen: 5,
+    frontLocal: "assets/sprites/front/golurk.gif",
+    backLocal: "assets/sprites/back/golurk.gif",
+    cryLocal: "assets/cries/golurk.ogg",
+    caught: {
+      level: 29,
+      place: "Dragonspiral Tower",
+      encounters: 7205,
+      datetime: "2025-07-11 19:44:35"
+    },
+    prefs: { likes: "Bitter food", dislikes: "Sweet food", personality: "Often dozes off" },
+    notes: "Hidden Ability unlocked."
+  },
+  {
+    file: "psyduck",
+    name: "Psyduck",
+    dex: 54,
+    trainer: "Tuna",
+    gen: 1,
+    frontLocal: "assets/sprites/front/psyduck.gif",
+    backLocal: "assets/sprites/back/psyduck.gif",
+    cryLocal: "assets/cries/psyduck.ogg",
+    caught: {
+      level: null,
+      place: "Unknown",
+      encounters: null,
+      datetime: "2025-06-15 16:44:17"
+    },
+    prefs: { likes: "Dry food", dislikes: "Bitter food", personality: "Likes to thrash about" },
+    notes: ""
+  },
+  {
+    file: "dusclops",
+    name: "Dusclops",
+    dex: 356,
+    trainer: "Tuna",
+    gen: 4,
+    frontLocal: "assets/sprites/front/dusclops.gif",
+    backLocal: "assets/sprites/back/dusclops.gif",
+    cryLocal: "assets/cries/dusclops.ogg",
+    caught: {
+      level: null,
+      place: "Mt. Pyre",
+      encounters: null,
+      datetime: "2025-08-02 10:33:47"
+    },
+    prefs: { likes: "Spicy food", dislikes: "Dry food", personality: "Often dozes off" },
+    notes: "Hidden Ability unlocked."
+  }
+];
+
+// Utility/fallback functions to build URLs
+function frontUrl(s){
+  // prefer local if present; but we can't check file existence without server,
+  // so the pattern: local path (works if you uploaded it), otherwise use PokéDB animated shiny.
+  return s.frontLocal || `https://img.pokemondb.net/sprites/black-white/anim/shiny/${s.file}.gif`;
+}
+function backUrl(s){
+  // fallback to PokéDB back shiny animated if available
+  return s.backLocal || `https://img.pokemondb.net/sprites/black-white/anim/back-shiny/${s.file}.gif`;
+}
+function cryUrl(s){
+  return s.cryLocal || `assets/cries/${s.file}.ogg`;
+}
+
+// Helpers: group by generation & sort
+const gens = {
+  1: { name:'Gen 1 (Kanto)', accent: 'var(--accent-kanto)', list: [] },
+  2: { name:'Gen 2 (Johto)', accent: 'var(--accent-johto)', list: [] },
+  3: { name:'Gen 3 (Hoenn)', accent: 'var(--accent-hoenn)', list: [] },
+  4: { name:'Gen 4 (Sinnoh)', accent: 'var(--accent-sinnoh)', list: [] },
+  5: { name:'Gen 5 (Unova)', accent: 'var(--accent-unova)', list: [] },
+  6: { name:'Gen 6 (Kalos)', accent: 'var(--accent-kanto)', list: [] },
+  7: { name:'Gen 7 (Alola)', accent: 'var(--accent-kanto)', list: [] },
+  8: { name:'Gen 8 (Galar)', accent: 'var(--accent-kanto)', list: [] }
+};
+
+// normalize and push
+shinies.forEach(s=>{
+  if(!s.gen) s.gen = getGenFromDex(s.dex);
+  gens[s.gen] && gens[s.gen].list.push(s);
+});
+
+// sort each gen by dex
+Object.values(gens).forEach(g=>{
+  g.list.sort((a,b)=>a.dex - b.dex);
+});
+
+// build UI
+const pokedexContainer = document.getElementById('pokedex-container');
+const trainerAvatar = document.getElementById('trainerAvatar');
+const trainerNameEl = document.getElementById('trainerName');
+const shinyCountEl = document.getElementById('shinyCount');
+
+// info panel elements
+const infoSprite = document.getElementById('infoSprite');
+const infoName = document.getElementById('infoName');
+const infoNum = document.getElementById('infoNum');
+const infoTrainer = document.getElementById('infoTrainer');
+const infoLevel = document.getElementById('infoLevel');
+const caughtText = document.getElementById('caughtText');
+const prefs = document.getElementById('prefs');
+const notes = document.getElementById('notes');
+const toggleBackBtn = document.getElementById('toggleBackBtn');
+const playCryBtn = document.getElementById('playCryBtn');
+
+let audio = null;
+let showingBack = false;
+
+// count shinies
+const totalShinies = shinies.length;
+shinyCountEl.textContent = `ShinyDex: ${totalShinies}`;
+
+// render each generation section
+Object.keys(gens).forEach(genKey=>{
+  const g = gens[genKey];
+  if(g.list.length === 0) return; // skip empty gens
+
+  const header = document.createElement('div');
+  header.className = 'gen-header';
+  header.style.border = `2px solid rgba(255,255,255,0.03)`;
+  header.innerHTML = `<div class="gen-title">${g.name}</div><div class="gen-toggle">▸</div>`;
+  // accent style
+  header.style.background = 'linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.02))';
+
+  const listWrap = document.createElement('div');
+  listWrap.className = 'gen-list';
+  const grid = document.createElement('div');
+  grid.className = 'pokedex-grid';
+
+  // build cards
+  g.list.forEach(s=>{
+    const card = document.createElement('button');
+    card.className = 'poke-card';
+    card.setAttribute('aria-label', `${s.name} ${s.dex}`);
+    card.dataset.file = s.file;
+
+    const num = document.createElement('div'); num.className='dexnum'; num.textContent = `#${String(s.dex).padStart(3,'0')}`;
+    const name = document.createElement('div'); name.className='pokename'; name.textContent = s.name;
+    const img = document.createElement('img'); img.className='sprite';
+    img.src = frontUrl(s);
+    img.alt = `${s.name} shiny sprite`;
+
+    // sparkle overlay container
+    const sparkle = document.createElement('div'); sparkle.className = 'sparkle-overlay';
+    // add a few stars positioned randomly
+    for(let i=0;i<3;i++){
+      const star = document.createElement('div'); star.className='star';
+      star.style.left = `${10 + Math.random()*70}%`;
+      star.style.top = `${10 + Math.random()*70}%`;
+      star.style.animationDelay = `${i*0.08}s`;
+      sparkle.appendChild(star);
     }
-  ];
 
-  // Helpers to build sprite URLs from file names
-  // Using official pokemondb shiny animated sprites for front/back
-  // Format: https://img.pokemondb.net/sprites/black-white/anim/shiny/<file>.gif
-  // Back: https://img.pokemondb.net/sprites/black-white/anim/back-shiny/<file>.gif
+    card.appendChild(num);
+    card.appendChild(img);
+    card.appendChild(name);
+    card.appendChild(sparkle);
 
-  function getFrontSpriteUrl(file) {
-    return `https://img.pokemondb.net/sprites/black-white/anim/shiny/${file}.gif`;
+    // hover/touch behavior
+    let played = false; // ensure one-time-per-hover
+    const showInfo = (evt)=>{
+      // update right panel with s
+      trainerAvatar.src = getTrainerAvatar(s.trainer);
+      trainerNameEl.textContent = s.trainer;
+      infoSprite.src = frontUrl(s);
+      infoName.textContent = s.name;
+      infoNum.textContent = `#${String(s.dex).padStart(3,'0')}`;
+      infoTrainer.textContent = `Trainer: ${s.trainer}`;
+      infoLevel.textContent = `Lv. ${s.caught.level ?? '—'}`;
+
+      const encText = s.caught.encounters ? `after ${s.caught.encounters} encounter${s.caught.encounters === 1 ? '' : 's'}` : '';
+      caughtText.innerHTML = `Met at lv. ${s.caught.level ?? '—'} in ${s.caught.place ?? '—'} ${encText} on ${s.caught.datetime ?? '—'}`;
+
+      prefs.textContent = `Likes: ${s.prefs.likes ?? '—'} · Dislikes: ${s.prefs.dislikes ?? '—'} · ${s.prefs.personality ?? '—'}`;
+
+      notes.textContent = s.notes || '—';
+
+      // show sparkle animation ONE TIME per hover: add class 'play' then remove after animation
+      if(!played){
+        played = true;
+        sparkle.classList.add('play');
+        // remove play class shortly after max star animation time
+        setTimeout(()=> sparkle.classList.remove('play'), 900);
+        // also play cry if available
+        playCry(s);
+      }
+
+      // set info panel back sprite toggle default to front
+      showingBack = false;
+      toggleBackBtn.textContent = 'Show back';
+    };
+
+    card.addEventListener('mouseenter', showInfo);
+    card.addEventListener('focus', showInfo);
+
+    // support touch: tap to open info (simulate hover)
+    card.addEventListener('click', (e)=>{
+      // for accessibility, also open info
+      showInfo();
+      // on small screens, scroll to right panel
+      if(window.innerWidth < 900){
+        document.getElementById('infoSprite').scrollIntoView({behavior:'smooth', block:'center'});
+      }
+    });
+
+    grid.appendChild(card);
+  });
+
+  listWrap.appendChild(grid);
+  pokedexContainer.appendChild(header);
+  pokedexContainer.appendChild(listWrap);
+
+  // initially expand
+  listWrap.style.height = grid.scrollHeight + 'px';
+  header.querySelector('.gen-toggle').textContent = '▾';
+
+  // header toggle
+  header.addEventListener('click', ()=>{
+    const toggle = header.querySelector('.gen-toggle');
+    if(listWrap.style.height && listWrap.style.height !== '0px'){
+      listWrap.style.height = '0px';
+      toggle.style.transform = 'rotate(0deg)';
+      toggle.textContent = '▸';
+    } else {
+      listWrap.style.height = grid.scrollHeight + 'px';
+      toggle.style.transform = 'rotate(90deg)';
+      toggle.textContent = '▾';
+    }
+  });
+
+});
+
+// helper: get trainer avatar (basic mapping)
+function getTrainerAvatar(name){
+  const map = {
+    "Tuna":"https://archives.pokemmo.eu/images/avatarMale_3.png",
+    "Chels":"https://archives.pokemmo.eu/images/avatarFemale_14.png"
+  };
+  return map[name] || map["Tuna"];
+}
+
+// toggle back/front in side panel
+toggleBackBtn.addEventListener('click', ()=>{
+  const currentFile = infoSprite.src.split('/').pop().split('.')[0];
+  // find shiny object by name or file
+  const s = shinies.find(x=> x.file === currentFile || x.name.toLowerCase()===(infoName.textContent.toLowerCase()));
+  if(!s) return;
+  if(!showingBack){
+    const b = backUrl(s);
+    infoSprite.src = b;
+    toggleBackBtn.textContent = 'Show front';
+    showingBack = true;
+  } else {
+    infoSprite.src = frontUrl(s);
+    toggleBackBtn.textContent = 'Show back';
+    showingBack = false;
   }
-  function getBackSpriteUrl(file) {
-    return `https://img.pokemondb.net/sprites/black-white/anim/back-shiny/${file}.gif`;
+});
+
+// play cry button
+playCryBtn.addEventListener('click', ()=>{
+  const s = shinies.find(x => infoName.textContent.toLowerCase() === x.name.toLowerCase());
+  s && playCry(s, true);
+});
+
+function playCry(s, force){
+  // load local cry path (silent fallback if file missing)
+  const url = cryUrl(s);
+  // stop existing audio
+  try{ if(audio){ audio.pause(); audio.currentTime=0; } }catch(e){}
+  audio = new Audio(url);
+  audio.volume = 0.7;
+  audio.onerror = ()=>{ /* no-op if file missing */ };
+  // try play (some browsers require user interaction for audio - clicks will allow it)
+  audio.play().catch(()=>{/* autoplay blocked often; user can click Play Cry btn */});
+}
+
+// attempt to derive generation from dex if missing
+function getGenFromDex(d){
+  if(d <=151) return 1;
+  if(d <=251) return 2;
+  if(d <=386) return 3;
+  if(d <=493) return 4;
+  if(d <=649) return 5;
+  if(d <=721) return 6;
+  if(d <=809) return 7;
+  return 8;
+}
+
+// On load: set first entry to first shinies item
+window.addEventListener('load', ()=>{
+  if(shinies.length > 0){
+    const first = shinies[0];
+    trainerAvatar.src = getTrainerAvatar(first.trainer);
+    trainerNameEl.textContent = first.trainer;
+    infoSprite.src = frontUrl(first);
+    infoName.textContent = first.name;
+    infoNum.textContent = `#${String(first.dex).padStart(3,'0')}`;
+    infoTrainer.textContent = `Trainer: ${first.trainer}`;
+    infoLevel.textContent = `Lv. ${first.caught.level ?? '—'}`;
+
+    const encText = first.caught.encounters ? `after ${first.caught.encounters} encounter${first.caught.encounters===1?'':'s'}` : '';
+    caughtText.innerHTML = `Met at lv. ${first.caught.level ?? '—'} in ${first.caught.place ?? '—'} ${encText} on ${first.caught.datetime ?? '—'}`;
+
+    prefs.textContent = `Likes: ${first.prefs.likes ?? '—'} · Dislikes: ${first.prefs.dislikes ?? '—'} · ${first.prefs.personality ?? '—'}`;
+    notes.textContent = first.notes || '—';
   }
+});
+</script>
 
-  // DOM Elements
-  const trainerContainer = document.getElementById('trainer-container');
-  const trainerNameEl = document.getElementById('trainerName');
-  const shinyCountEl = document.getElementById('shinyCount');
-  const trainerAvatarEl = document.getElementById('trainerAvatar');
-  const infoSpriteEl = document.getElementById('infoSprite');
-  const infoNameEl = document.getElementById('infoName');
-  const infoNumEl = document.getElementById('infoNum');
-  const infoTrainerEl = document.getElementById('infoTrainer');
-  const infoLevelEl = document.getElementById('infoLevel');
-  const caughtTextEl = document.getElementById('caughtText');
-  const prefsEl = document.getElementById('prefs');
-  const notesEl = document.getElementById('notes');
-  const toggleBackBtn = document.getElementById('toggleBackBtn');
-  const playCryBtn = document.getElementById('playCryBtn');
-
-  // State
-  let currentlySelected = null;
-  let showBack = false;
-  let audioCry = null;
-
-  // Group shinies by trainer
-  const groupedByTrainer = shinies.reduce((acc, shiny) => {
-    if (!acc[shiny.trainer]) acc[shiny.trainer] = [];
-    acc[shiny.trainer].push(shiny);
-    return acc;
-  }, {});
-
-  // Create the trainer cards
-  Object.entries(groupedByTrainer).forEach(([trainerName, shinyList]) => {
-    const card = document.createElement('div');
-    card.className = 'trainer-card';
-
-    // Trainer header
-    const header = document.createElement('div');
-    header.className = 'trainer-header collapsed';
-    header.tabIndex = 0;
-    header.setAttribute('role', 'button');
-    header.setAttribute('aria-expanded', 'false');
-    header.setAttribute('aria-controls', `${trainerName}-list`);
-    header.id = `${trainerName}-header`;
-
-    // Avatar for trainer header
-    const avatarImg = document.createElement('img');
-    avatarImg.alt = `${trainerName} avatar`;
-    avatarImg.src = trainersData[trainerName]?.avatar || 'https://archives.pokemmo.eu/images/avatarMale_3.png';
-    header.appendChild
+</body>
+</html>
