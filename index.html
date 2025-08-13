@@ -3,47 +3,30 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Tuna & Chels — PokeMMO ShinyDex</title>
-
+<title>Trainer ShinyDex - Single Page</title>
 <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet" />
-
 <style>
   :root {
     --bg:#080808;
     --panel:#111213;
     --muted:#c7cbd1;
   }
-  *{box-sizing:border-box}
-  html,body {
-    height:100%;
-    margin:0;
-    background:linear-gradient(180deg,#060606,#0b0b0b);
-    color:var(--muted);
-    font-family: 'VT323', monospace;
-    -webkit-font-smoothing:antialiased;
+  *{box-sizing:border-box;}
+  body {
+    margin:0; font-family: 'VT323', monospace; background:linear-gradient(180deg,#060606,#0b0b0b); color:var(--muted); -webkit-font-smoothing:antialiased;
   }
   header {
     background: linear-gradient(90deg,#b71c1c,#ff5252);
-    padding:1.6rem 1rem; 
-    text-align:center; 
-    font-size:2.4rem; 
-    color:#fff; 
-    border-radius:0 0 12px 12px; 
-    margin-bottom:1rem;
+    padding:1.6rem;
+    font-size:2.4rem;
+    color:#fff;
+    text-align:center;
+    border-radius: 0 0 12px 12px;
+    margin-bottom: 1rem;
     text-shadow: 0 0 12px rgba(255,82,82,0.5);
   }
-  /* PAGE 1 */
-  #page1 {
-    height: calc(100vh - 5rem);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 6rem;
-    background: var(--panel);
-    border-radius: 16px;
-    margin: 0 1rem 3rem;
-    padding: 2rem;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.7);
+  #trainer-select {
+    display:flex; justify-content:center; gap:5rem; margin:0 1rem 2rem;
   }
   .character-card {
     background: linear-gradient(180deg, #222224, #2c2c2f);
@@ -53,8 +36,8 @@
     text-align: center;
     width: 220px;
     box-shadow: 0 8px 26px rgba(0,0,0,0.7);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
     user-select:none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
   .character-card:hover, .character-card:focus {
     transform: translateY(-10px) scale(1.05);
@@ -76,75 +59,145 @@
     letter-spacing: 0.15em;
   }
 
-  /* PAGE 2 */
-  #page2 {
-    max-width: 1400px;
+  #shiny-section {
+    max-width: 1200px;
     margin: 0 auto 3rem;
-    display: flex;
+    display: none;
     gap: 1.6rem;
     padding: 0 1rem;
     min-height: 70vh;
-    display:none;
+    flex-wrap: nowrap;
+    box-sizing: border-box;
   }
-  #left-panel{
-    flex: 3 1 0; background:var(--panel); border-radius:14px; padding:1.6rem; box-shadow: 0 6px 24px rgba(0,0,0,0.6);
-    min-height:60vh;
+  #left-panel {
+    flex: 3 1 0;
+    background: var(--panel);
+    border-radius: 14px;
+    padding: 1.6rem;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.6);
+    min-height: 60vh;
     overflow-y: auto;
   }
-  #right-panel{
-    flex: 1 1 320px; background:linear-gradient(180deg,#131416,#0f1113); border-radius:14px; padding:1.4rem; box-shadow:0 6px 22px rgba(0,0,0,0.6);
-    min-width:280px; position:relative;
+  #right-panel {
+    flex: 1 1 320px;
+    background: linear-gradient(180deg,#131416,#0f1113);
+    border-radius: 14px;
+    padding: 1.4rem;
+    box-shadow: 0 6px 22px rgba(0,0,0,0.6);
+    min-width: 280px;
+    position: relative;
   }
-  .pokedex-grid{
-    display:grid;
+  .pokedex-grid {
+    display: grid;
     grid-template-columns: repeat(auto-fill, minmax(140px,1fr));
-    gap:12px;
+    gap: 12px;
   }
-  .poke-card{
+  .poke-card {
     background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.02));
-    border-radius:12px; padding:10px; text-align:center; cursor:pointer; border:2px solid rgba(255,255,255,0.03);
-    transition: transform .18s ease, box-shadow .18s ease;
-    position:relative; overflow:visible;
+    border-radius: 12px;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    border: 2px solid rgba(255,255,255,0.03);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+    position: relative;
+    overflow: visible;
   }
-  .poke-card:focus, .poke-card:hover{
-    transform: translateY(-6px); 
-    box-shadow: 0 14px 40px rgba(0,0,0,0.6); 
-    outline:none; 
-    z-index:2;
+  .poke-card:hover, .poke-card:focus {
+    transform: translateY(-6px);
+    box-shadow: 0 14px 40px rgba(0,0,0,0.6);
+    outline: none;
+    z-index: 2;
   }
-  .dexnum{ font-size:0.9rem; color:#ffb6b6; font-weight:700; margin-bottom:4px; }
-  .pokename{ font-size:1.2rem; color:#ff6b6b; margin-bottom:8px; text-transform:capitalize; }
-  .sprite{ width:96px; height:96px; image-rendering: pixelated; display:block; margin:0 auto 8px; }
+  .dexnum {
+    font-size: 0.9rem;
+    color: #ffb6b6;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .pokename {
+    font-size: 1.2rem;
+    color: #ff6b6b;
+    margin-bottom: 8px;
+    text-transform: capitalize;
+  }
+  .sprite {
+    width: 96px;
+    height: 96px;
+    image-rendering: pixelated;
+    display: block;
+    margin: 0 auto 8px;
+  }
 
   /* side card */
-  #infoSprite{ width:160px; height:160px; image-rendering: pixelated; display:block; margin:0 auto 12px; }
-  #infoName{ font-size:2rem; color:#ff6b6b; text-align:center; text-transform:capitalize; margin-bottom:6px; }
-  #infoNum{ text-align:center; color:#ffb6b6; font-weight:700; margin-bottom:8px;}
-  .info-row{ display:flex; gap:8px; align-items:center; justify-content:center; margin-bottom:8px; }
-  .chip{ background:rgba(255,255,255,0.03); padding:6px 10px; border-radius:8px; font-size:0.9rem; color:var(--muted); }
-  .info-block{ background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.02)); padding:10px; border-radius:10px; margin-top:8px; color:var(--muted); font-size:0.95rem; line-height:1.25; }
-
-  .mini-row{ display:flex; gap:8px; justify-content:center; margin-top:10px; }
-  .btn{ background:#222; padding:6px 10px; border-radius:8px; cursor:pointer; border:1px solid rgba(255,255,255,0.03); user-select:none; }
-  .btn:hover { background:#ff5252; border-color:#ff6b6b; }
-
-  /* responsive tweaks */
-  @media(min-width:1100px){
-    main{ padding:0 2rem; }
-    .pokedex-grid{ grid-template-columns: repeat(auto-fill, minmax(160px,1fr)); }
-    #right-panel{ min-width:360px; }
+  #infoSprite {
+    width: 160px;
+    height: 160px;
+    image-rendering: pixelated;
+    display: block;
+    margin: 0 auto 12px;
   }
-  @media(max-width:900px){
-    main{ flex-direction:column; padding:0 12px; }
-    #right-panel{ order:-1; }
+  #infoName {
+    font-size: 2rem;
+    color: #ff6b6b;
+    text-align: center;
+    text-transform: capitalize;
+    margin-bottom: 6px;
+  }
+  #infoNum {
+    text-align: center;
+    color: #ffb6b6;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .info-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+  }
+  .chip {
+    background: rgba(255,255,255,0.03);
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+  .info-block {
+    background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.02));
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 8px;
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.25;
+  }
+  .mini-row {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  .btn {
+    background: #222;
+    padding: 6px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    border: 1px solid rgba(255,255,255,0.03);
+    user-select:none;
+  }
+  .btn:hover {
+    background: #ff5252;
+    border-color: #ff6b6b;
   }
 </style>
 </head>
 <body>
+
 <header>POKÉMMO — Trainer ShinyDex</header>
 
-<!-- PAGE 1: Trainer selection -->
-<section id="page1" aria-label="Select Trainer">
+<section id="trainer-select" aria-label="Select Trainer">
   <div class="character-card" tabindex="0" data-trainer="Tuna" aria-label="Select Tuna">
     <img src="https://archives.pokemmo.eu/images/avatarMale_3.png" alt="Tuna character sprite" />
     <div class="character-name">Tuna</div>
@@ -155,12 +208,10 @@
   </div>
 </section>
 
-<!-- PAGE 2: Shiny Dex -->
-<main id="page2" aria-label="ShinyDex page" tabindex="-1">
-  <section id="left-panel" aria-label="Pokedex listing">
+<section id="shiny-section" aria-label="Shiny Pokémon for selected trainer" tabindex="-1">
+  <div id="left-panel">
     <div id="pokedex-container" class="pokedex-grid"></div>
-  </section>
-
+  </div>
   <aside id="right-panel" aria-live="polite">
     <div class="trainer" style="text-align:center; margin-bottom: 1rem;">
       <img id="trainerAvatar" src="" alt="Trainer avatar" style="width:140px; height:210px; image-rendering: pixelated; border-radius:10px;" />
@@ -200,11 +251,11 @@
       <div class="btn" id="backToSelectBtn" style="margin-left:auto; background:#900;">Back</div>
     </div>
   </aside>
-</main>
+</section>
 
 <script>
 const shinies = [
-  // Chels shinies
+  // Chels
   {
     file: "girafarig",
     name: "Girafarig",
@@ -257,7 +308,7 @@ const shinies = [
     notes: ""
   },
 
-  // Tuna shinies
+  // Tuna
   {
     file: "lilligant",
     name: "Lilligant",
@@ -368,3 +419,16 @@ const shinies = [
     frontLocal: "https://archives.pokemmo.eu/shiny/front/weezing.gif",
     backLocal: "https://archives.pokemmo.eu/shiny/back/weezing.gif",
     cryLocal: "https://archives.pokemmo.eu/cries/weezing.ogg",
+    caught: {
+      level: null,
+      place: "Burned Tower",
+      encounters: 35861,
+      datetime: "2025-08-03 18:50:47"
+    },
+    prefs: { likes: "Dry food", dislikes: "Sour food", personality: "Often dozes off" },
+    notes: ""
+  }
+];
+
+// Elements
+const trainerSelect = document.getElementById('
