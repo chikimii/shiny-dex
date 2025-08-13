@@ -231,12 +231,12 @@ Dislikes Bitter food.
 Somewhat vain.`
   },
   {
-    file: "tailow",
-    name: "Tailow",
-    dex: 276,
-    trainer: "Chels",
-    details: `Chico! A gift from Tuna because he’s so sweet ♡`
-  },
+  file: "tailow",
+  name: "Tailow",
+  dex: 276,
+  trainer: "Chels",
+  details: `Chico! A gift from Tuna because he’s so sweet ♡`
+},
 
   // Tuna
   {
@@ -381,7 +381,10 @@ Alert to sounds.`
 ];
 
 function getFrontSpriteUrl(poke){
-  // Use animated shiny gif from pokemondb for all, including Tailow
+  if(poke.file === 'tailow'){
+    // Use the custom shiny animated Tailow gif from projectpokemon.org
+    return 'https://projectpokemon.org/images/shiny-sprite/taillow.gif';
+  }
   return `https://img.pokemondb.net/sprites/black-white/anim/shiny/${poke.file}.gif`;
 }
 
@@ -392,7 +395,7 @@ function buildTrainerGrid(trainerName, containerId, countId){
   countEl.textContent = `ShinyDex: ${filtered.length}`;
   filtered.sort((a,b) => a.dex - b.dex);
 
-  container.innerHTML = ''; // clear previous content if any
+  container.innerHTML = '';
 
   filtered.forEach(p=>{
     const card = document.createElement('button');
@@ -418,7 +421,6 @@ function buildTrainerGrid(trainerName, containerId, countId){
     card.appendChild(name);
     container.appendChild(card);
 
-    // Hover/focus event to update info panel
     card.addEventListener('mouseenter', () => updateInfoPanel(p));
     card.addEventListener('focus', () => updateInfoPanel(p));
   });
@@ -439,7 +441,6 @@ function updateInfoPanel(poke){
   infoDetails.textContent = poke.details || "No additional info available";
 }
 
-// Initialize
 buildTrainerGrid('Chels', 'chels-grid', 'chels-shiny-count');
 buildTrainerGrid('Tuna', 'tuna-grid', 'tuna-shiny-count');
 </script>
