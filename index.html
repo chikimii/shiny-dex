@@ -348,7 +348,31 @@ Likes Spicy food.
 Dislikes Dry food.
 Often dozes off.
 Hidden Ability unlocked.`
-  }
+  },
+  // Added Octillery
+  {
+    file: "octillery",
+    name: "Octillery",
+    dex: 224,
+    trainer: "Tuna",
+    details: `Met at Undella Bay
+after 54017 encounter on
+8/8/25 9:01:47 PM
+Likes Sweet food.
+Dislikes Sour food.
+Mischievous.`
+  },
+  // Added Venipede
+  {
+    file: "venipede",
+    name: "Venipede",
+    dex: 543,
+    trainer: "Tuna",
+    details: `Met at Iv. 18 in Lostlorn Forest after 3819 encounter on
+8/12/25 11:24:16 AM
+No flavor preferences.
+Alert to sounds.`
+  },
 ];
 
 function getFrontSpriteUrl(poke){
@@ -361,6 +385,8 @@ function buildTrainerGrid(trainerName, containerId, countId){
   const filtered = shinies.filter(p => p.trainer === trainerName);
   countEl.textContent = `ShinyDex: ${filtered.length}`;
   filtered.sort((a,b) => a.dex - b.dex);
+
+  container.innerHTML = ''; // clear previous content if any
 
   filtered.forEach(p=>{
     const card = document.createElement('button');
