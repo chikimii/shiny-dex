@@ -231,12 +231,23 @@ Dislikes Bitter food.
 Somewhat vain.`
   },
   {
-  file: "tailow",
-  name: "Tailow",
-  dex: 276,
-  trainer: "Chels",
-  details: `Chico! A gift from Tuna because he’s so sweet ♡`
-},
+    file: "tailow",
+    name: "Tailow",
+    dex: 276,
+    trainer: "Chels",
+    details: `Chico! A gift from Tuna because he’s so sweet ♡`
+  },
+  {
+    file: "dunsparce",
+    name: "Dunsparce",
+    dex: 206,
+    trainer: "Chels",
+    details: `Met at Iv. 46 in THREE ISLE PORT
+after 74128 encounter on 14/08/2025 14:11:24
+Likes Dry food.
+Dislikes Sour food.
+Capable of taking hits.`
+  },
 
   // Tuna
   {
@@ -382,8 +393,10 @@ Alert to sounds.`
 
 function getFrontSpriteUrl(poke){
   if(poke.file === 'tailow'){
-    // Use the custom shiny animated Tailow gif from projectpokemon.org
     return 'https://projectpokemon.org/images/shiny-sprite/taillow.gif';
+  }
+  if(poke.file === 'dunsparce'){
+    return 'https://img.pokemondb.net/sprites/black-white/anim/shiny/dunsparce.gif';
   }
   return `https://img.pokemondb.net/sprites/black-white/anim/shiny/${poke.file}.gif`;
 }
