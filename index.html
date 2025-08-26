@@ -167,31 +167,69 @@
 </main>
 
 <script>
-const secretStar = "https://i.imgur.com/2o3hz9M.png";
-const fishingRod = "https://i.imgur.com/4yFzE6b.png";
+const secretStar = "https://i.imgur.com/2o3hz9M.png"; // example star icon
+const fishingRod = "https://i.imgur.com/4yFzE6b.png"; // example rod icon
 
 const shinies = [
   // Chels
   {file:"girafarig", name:"Girafarig", dex:203, trainer:"Chels", details:"Met at Iv. 24 in Route 43\nafter 4210 encounters\nLikes Spicy food.\nDislikes Dry food.\nLikes to thrash about."},
-  {file:"mankey", name:"Mankey", dex:56, trainer:"Chels"},
-  {file:"magikarp", name:"Magikarp", dex:129, trainer:"Chels"},
-  {file:"tailow", name:"Tailow", dex:276, trainer:"Chels"},
-  {file:"dunsparce", name:"Dunsparce", dex:206, trainer:"Chels"},
-  {file:"lotad", name:"Lotad", dex:270, trainer:"Chels"},
+  {file:"mankey", name:"Mankey", dex:56, trainer:"Chels", details:"Met at Iv. 21 in Route 42\nafter 3562 encounters\nLikes Sour food.\nDislikes Sweet food.\nMischievous."},
+  {file:"magikarp", name:"Magikarp", dex:129, trainer:"Chels", details:"Met at Iv. 33 in Dragon's Den\nLikes Sweet food.\nDislikes Bitter food.\nSomewhat vain."},
+  {file:"tailow", name:"Tailow", dex:276, trainer:"Chels", details:"Chico! A gift from Tuna because he’s so sweet ♡"},
+  {file:"dunsparce", name:"Dunsparce", dex:206, trainer:"Chels", details:"Met at Iv. 46 in THREE ISLE PORT\nafter 74128 encounters\nLikes Dry food.\nDislikes Sour food.\nCapable of taking hits."},
+  {file:"lotad", name:"Lotad", dex:270, trainer:"Chels", details:"Met at Iv. 15 in ROUTE 114\nafter 21276 encounters\nLikes Dry food.\nDislikes Spicy food.\nAlert to sounds."},
 
   // Tuna
-  {file:"lilligant", name:"Lilligant", dex:549, trainer:"Tuna"},
-  {file:"weezing", name:"Weezing", dex:110, trainer:"Tuna"},
-  {file:"golurk", name:"Golurk", dex:623, trainer:"Tuna"},
-  {file:"octillery", name:"Octillery", dex:224, trainer:"Tuna"},
+  {file:"lilligant", name:"Lilligant", dex:549, trainer:"Tuna", details:"Met at lv. 19 in Lostlorn Forest\nafter 5165 encounters"},
+  {file:"weezing", name:"Weezing", dex:110, trainer:"Tuna", details:"Met in Burned Tower\nafter 35861 encounters"},
+  {file:"golurk", name:"Golurk", dex:623, trainer:"Tuna", details:"Met at Iv. 29 in Dragonspiral Tower\nafter 7205 encounters"},
+  {file:"octillery", name:"Octillery", dex:224, trainer:"Tuna", details:"Met at Battle Frontier\nafter 54017 encounters"},
 
-  // Muted (duplicates as separate entries)
-  "tentacool,gastly,lickytung,poliwhirl,gothitelle,weezing,mienfoo,meowth,meowth,dratini,petilil,budew,miltank,ponyta,spinda,venipede,delibird,litwick,corsola,luxio,jynx,cubchoo,geodude,venipede"
-  .split(",").forEach((n,i)=>shinies.push({file:n, name:n, dex:100+i, trainer:"Muted", icons:n==="corsola"?[secretStar,fishingRod]:undefined})),
+  // Muted
+  {file:"tentacool", name:"Tentacool", dex:72, trainer:"Muted"},
+  {file:"gastly", name:"Gastly", dex:92, trainer:"Muted"},
+  {file:"lickytung", name:"Lickitung", dex:108, trainer:"Muted"},
+  {file:"poliwhirl", name:"Poliwhirl", dex:61, trainer:"Muted"},
+  {file:"gothitelle", name:"Gothitelle", dex:576, trainer:"Muted"},
+  {file:"weezing", name:"Weezing", dex:110, trainer:"Muted"},
+  {file:"mienfoo", name:"Mienfoo", dex:622, trainer:"Muted"},
+  {file:"meowth", name:"Meowth", dex:52, trainer:"Muted"},
+  {file:"dratini", name:"Dratini", dex:147, trainer:"Muted"},
+  {file:"petilil", name:"Petilil", dex:548, trainer:"Muted"},
+  {file:"budew", name:"Budew", dex:406, trainer:"Muted"},
+  {file:"miltank", name:"Miltank", dex:241, trainer:"Muted"},
+  {file:"ponyta", name:"Ponyta", dex:77, trainer:"Muted"},
+  {file:"spinda", name:"Spinda", dex:327, trainer:"Muted"},
+  {file:"venipede", name:"Venipede", dex:543, trainer:"Muted"},
+  {file:"delibird", name:"Delibird", dex:225, trainer:"Muted"},
+  {file:"litwick", name:"Litwick", dex:607, trainer:"Muted"},
+  {file:"corsola", name:"Corsola", dex:222, trainer:"Muted", icons:[secretStar,fishingRod]},
+  {file:"luxio", name:"Luxio", dex:404, trainer:"Muted"},
+  {file:"jynx", name:"Jynx", dex:124, trainer:"Muted"},
+  {file:"cubchoo", name:"Cubchoo", dex:613, trainer:"Muted"},
+  {file:"geodude", name:"Geodude", dex:74, trainer:"Muted"},
+  {file:"venipede", name:"Venipede", dex:543, trainer:"Muted"},
 
-  // Autistic (duplicates as separate entries)
-  "magikarp,magikarp,magikarp,magikarp,magikarp,magikarp,magikarp,dragonite,psyduck,ditto,ekans,spearow,poliwag,mankey,weezing,luvdisc,minccino,petilil,cryagonal,spoink,sandshrew,crustle,wingull,rattata,banette"
-  .split(",").forEach((n,i)=>shinies.push({file:n, name:n, dex:200+i, trainer:"Autistic", icons:n==="luvdisc"?[fishingRod]:undefined})),
+  // Autistic
+  {file:"magikarp", name:"Magikarp", dex:129, trainer:"Autistic"},
+  {file:"dragonite", name:"Dragonite", dex:149, trainer:"Autistic"},
+  {file:"psyduck", name:"Psyduck", dex:54, trainer:"Autistic"},
+  {file:"ditto", name:"Ditto", dex:132, trainer:"Autistic"},
+  {file:"ekans", name:"Ekans", dex:23, trainer:"Autistic"},
+  {file:"spearow", name:"Spearow", dex:21, trainer:"Autistic"},
+  {file:"poliwag", name:"Poliwag", dex:60, trainer:"Autistic"},
+  {file:"mankey", name:"Mankey", dex:56, trainer:"Autistic"},
+  {file:"weezing", name:"Weezing", dex:110, trainer:"Autistic"},
+  {file:"luvdisc", name:"Luvdisc", dex:370, trainer:"Autistic", icons:[fishingRod]},
+  {file:"minccino", name:"Minccino", dex:572, trainer:"Autistic"},
+  {file:"petilil", name:"Petilil", dex:548, trainer:"Autistic"},
+  {file:"cryogonal", name:"Cryogonal", dex:615, trainer:"Autistic"},
+  {file:"spoink", name:"Spoink", dex:325, trainer:"Autistic"},
+  {file:"sandshrew", name:"Sandshrew", dex:27, trainer:"Autistic"},
+  {file:"crustle", name:"Crustle", dex:558, trainer:"Autistic"},
+  {file:"wingull", name:"Wingull", dex:278, trainer:"Autistic"},
+  {file:"rattata", name:"Rattata", dex:19, trainer:"Autistic"},
+  {file:"banette", name:"Banette", dex:354, trainer:"Autistic"},
 ];
 
 function getFrontSpriteUrl(p){ return `https://img.pokemondb.net/sprites/black-white/anim/shiny/${p.file}.gif`; }
@@ -201,32 +239,36 @@ function buildTrainerGrid(trainerName, containerId, countId){
   const countEl = document.getElementById(countId);
   const filtered = shinies.filter(p => p.trainer===trainerName);
   countEl.textContent = `ShinyDex: ${filtered.length}`;
-  container.innerHTML='';
-  filtered.forEach((p,i)=>{
-    const card=document.createElement('button');
+  filtered.sort((a,b)=>a.dex-b.dex);
+  container.innerHTML = '';
+
+  filtered.forEach(p=>{
+    const card = document.createElement('button');
     card.className='poke-card';
     card.type='button';
     card.setAttribute('aria-label', `${p.name} #${p.dex} caught by ${p.trainer}`);
 
-    const num=document.createElement('div');
+    const num = document.createElement('div');
     num.className='dexnum';
     num.textContent=`#${String(p.dex).padStart(3,'0')}`;
 
-    const img=document.createElement('img');
+    const img = document.createElement('img');
     img.className='sprite';
     img.src=getFrontSpriteUrl(p);
     img.alt=`${p.name} shiny sprite`;
 
-    const name=document.createElement('div');
+    const name = document.createElement('div');
     name.className='pokename';
     name.textContent=p.name;
 
-    if(p.icons) p.icons.forEach(icon=>{
-      const iconEl=document.createElement('img');
-      iconEl.className='icon';
-      iconEl.src=icon;
-      name.appendChild(iconEl);
-    });
+    if(p.icons){
+      p.icons.forEach(icon=>{
+        const iconEl=document.createElement('img');
+        iconEl.className='icon';
+        iconEl.src=icon;
+        name.appendChild(iconEl);
+      });
+    }
 
     card.appendChild(num);
     card.appendChild(img);
@@ -247,7 +289,9 @@ function updateInfoPanel(p){
   document.getElementById('info-details').textContent=p.details||"No additional info available";
 }
 
-["Chels","Tuna","Muted","Autistic"].forEach(name=>buildTrainerGrid(name,name.toLowerCase()+"-grid",name.toLowerCase()+"-shiny-count"));
+["Chels","Tuna","Muted","Autistic"].forEach(name=>{
+  buildTrainerGrid(name,name.toLowerCase()+"-grid",name.toLowerCase()+"-shiny-count");
+});
 </script>
 </body>
 </html>
