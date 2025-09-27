@@ -4,7 +4,9 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Tuna & Chels — PokeMMO ShinyDex</title>
+
 <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+
 <style>
   :root{
     --bg:#080808;
@@ -40,10 +42,10 @@
     justify-content: center;
   }
   .trainer-wrapper {
-    flex: 1 1 100%;
+    flex: 1 1 600px;
     display: flex;
-    flex-wrap: wrap;
     gap: 2rem;
+    flex-wrap: wrap;
     justify-content: center;
   }
   section.trainer-section{
@@ -51,12 +53,8 @@
     border-radius:14px;
     padding:1.6rem;
     box-shadow: 0 6px 24px rgba(0,0,0,0.6);
-    flex: 1 1 420px;   /* wider default size */
-    max-width: 600px;  /* prevent them from being too long */
-    min-width: 360px;  /* ensures decent width */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    min-width: 280px;
+    flex: 1 1 280px;
   }
   h2 {
     text-align:center;
@@ -75,7 +73,6 @@
     display:grid;
     grid-template-columns: repeat(auto-fill,minmax(120px,1fr));
     gap:12px;
-    width: 100%;
   }
   .poke-card{
     background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.02));
@@ -96,8 +93,8 @@
   .dexnum{ font-size:0.85rem; color:#ffb6b6; font-weight:700; margin-bottom:4px; }
   .pokename{ font-size:1.1rem; color:#ff6b6b; margin-bottom:8px; text-transform:capitalize; }
   .sprite{ width:96px; height:96px; image-rendering: pixelated; display:block; margin:0 auto; }
-  .icon{ width:16px; height:16px; vertical-align:middle; margin-left:4px; }
 
+  /* Info panel on right */
   #info-panel {
     background: var(--panel);
     border-radius: 14px;
@@ -111,7 +108,7 @@
     flex-direction: column;
     align-items: center;
     font-size: 1.1rem;
-    white-space: pre-wrap;
+    white-space: pre-wrap; /* preserve line breaks */
   }
   #info-panel img {
     width: 160px;
@@ -119,105 +116,152 @@
     image-rendering: pixelated;
     margin-bottom: 12px;
   }
-  #info-name { font-size: 2rem; color: #ff6b6b; text-transform: capitalize; margin-bottom: 6px; text-align:center; }
-  #info-num { font-weight: 700; color: #ffb6b6; margin-bottom: 12px; text-align:center; }
-  #info-trainer { font-weight: 600; margin-bottom: 8px; color: var(--muted); text-align:center; }
-  #info-details { font-size: 1rem; background: #222326; border-radius: 10px; padding: 12px; width: 100%; color: #d0d0d0; white-space: pre-wrap; }
+  #info-name {
+    font-size: 2rem;
+    color: #ff6b6b;
+    text-transform: capitalize;
+    margin-bottom: 6px;
+    text-align:center;
+  }
+  #info-num {
+    font-weight: 700;
+    color: #ffb6b6;
+    margin-bottom: 12px;
+    text-align:center;
+  }
+  #info-trainer {
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--muted);
+    text-align:center;
+  }
+  #info-details {
+    font-size: 1rem;
+    background: #222326;
+    border-radius: 10px;
+    padding: 12px;
+    width: 100%;
+    color: #d0d0d0;
+    white-space: pre-wrap;
+  }
 
+  /* Responsive */
   @media (max-width: 960px) {
-    main { flex-direction: column; align-items: center; }
-    #info-panel { width: 100%; min-width: auto; margin-top: 2rem; }
-    .trainer-wrapper { flex-wrap: nowrap; flex-direction: column; width: 100%; }
-    section.trainer-section { min-width: auto; width: 100%; }
+    main {
+      flex-direction: column;
+      align-items: center;
+    }
+    #info-panel {
+      width: 100%;
+      min-width: auto;
+      margin-top: 2rem;
+    }
+    .trainer-wrapper {
+      flex-wrap: nowrap;
+      flex-direction: column;
+      width: 100%;
+    }
   }
 </style>
 </head>
 <body>
 <header>POKÉMMO — Trainer ShinyDex</header>
 <main>
-<div class="trainer-wrapper" role="list">
 
-<section class="trainer-section" id="chels-section">
-  <h2>Chels</h2>
-  <div class="shiny-count" id="chels-shiny-count"></div>
-  <div class="pokedex-grid" id="chels-grid"></div>
-</section>
+  <div class="trainer-wrapper" role="list">
 
-<section class="trainer-section" id="tuna-section">
-  <h2>Tuna</h2>
-  <div class="shiny-count" id="tuna-shiny-count"></div>
-  <div class="pokedex-grid" id="tuna-grid"></div>
-</section>
+    <section class="trainer-section" id="chels-section" aria-label="Chels's shinies">
+      <h2>Chels</h2>
+      <div class="shiny-count" id="chels-shiny-count">ShinyDex: 0</div>
+      <div class="pokedex-grid" id="chels-grid"></div>
+    </section>
 
-<section class="trainer-section" id="muted-section">
-  <h2>Muted</h2>
-  <div class="shiny-count" id="muted-shiny-count"></div>
-  <div class="pokedex-grid" id="muted-grid"></div>
-</section>
+    <section class="trainer-section" id="tuna-section" aria-label="Tuna's shinies">
+      <h2>Tuna</h2>
+      <div class="shiny-count" id="tuna-shiny-count">ShinyDex: 0</div>
+      <div class="pokedex-grid" id="tuna-grid"></div>
+    </section>
 
-<section class="trainer-section" id="autistic-section">
-  <h2>Autistic</h2>
-  <div class="shiny-count" id="autistic-shiny-count"></div>
-  <div class="pokedex-grid" id="autistic-grid"></div>
-</section>
+  </div>
 
-</div>
+  <section id="info-panel" aria-live="polite" aria-atomic="true" aria-label="Selected shiny info">
+    <img id="info-sprite" src="" alt="Selected shiny sprite" />
+    <div id="info-name">Hover or focus on a shiny</div>
+    <div id="info-num"></div>
+    <div id="info-trainer"></div>
+    <div id="info-details">No shiny selected</div>
+  </section>
 
-<section id="info-panel" aria-live="polite" aria-atomic="true">
-  <img id="info-sprite" src="" alt="Selected shiny sprite" />
-  <div id="info-name">Hover or focus on a shiny</div>
-  <div id="info-num"></div>
-  <div id="info-trainer"></div>
-  <div id="info-details">No shiny selected</div>
-</section>
 </main>
 
 <script>
-const secretStar = "https://forums.pokemmo.com/uploads/monthly_2024_07/secret_shiny-removebg-preview.png.b330f50a7ecfe83ac098df693d13d14d.png"; // example star icon
-const fishingRod = "https://wiki.cobblemon.com/images/9/90/Poke_Rod_%28Roseate_Ball%29.png"; // example rod icon
-
-// fix common filename typos so sprites resolve
-const FILE_ALIASES = {
-  tailow: 'taillow',
-  lickytung: 'lickitung'
-};
-
-function fileNameFor(p){
-  const base = (FILE_ALIASES[p.file] || p.file || '').toLowerCase().trim();
-  return base;
-}
-
-function bwAnimUrl(file){ return `https://img.pokemondb.net/sprites/black-white/anim/shiny/${file}.gif`; }
-function gen2Url(file){ return `https://img.pokemondb.net/sprites/other-gen2/shiny/${file}.gif`; }
-
-// set the image src with fallback: try BW anim first; if it fails, switch to Gen2
-function setSpriteWithFallback(imgEl, file){
-  let triedGen2 = false;
-  imgEl.onerror = () => {
-    if(!triedGen2){
-      triedGen2 = true;
-      imgEl.src = gen2Url(file);
-    } else {
-      // stop infinite loops if both fail
-      imgEl.onerror = null;
-    }
-  };
-  imgEl.src = bwAnimUrl(file);
-}
-
 const shinies = [
   // Chels
-  {file:"girafarig", name:"Girafarig", dex:203, trainer:"Chels", details:"Met at Iv. 24 in Route 43\nafter 4210 encounters\nLikes Spicy food.\nDislikes Dry food.\nLikes to thrash about."},
-  {file:"mankey", name:"Mankey", dex:56, trainer:"Chels", details:"Met at Iv. 21 in Route 42\nafter 3562 encounters\nLikes Sour food.\nDislikes Sweet food.\nMischievous."},
-  {file:"magikarp", name:"Magikarp", dex:129, trainer:"Chels", details:"Met at Iv. 33 in Dragon's Den\nLikes Sweet food.\nDislikes Bitter food.\nSomewhat vain."},
-  {file:"tailow", name:"Taillow", dex:276, trainer:"Chels", details:"Chico! A gift from Tuna because he’s so sweet ♡"},
-  {file:"dunsparce", name:"Dunsparce", dex:206, trainer:"Chels", details:"Met at Iv. 46 in THREE ISLE PORT\nafter 74128 encounters\nLikes Dry food.\nDislikes Sour food.\nCapable of taking hits."},
-  {file:"lotad", name:"Lotad", dex:270, trainer:"Chels", details:"Met at Iv. 15 in ROUTE 114\nafter 21276 encounters\nLikes Dry food.\nDislikes Spicy food.\nAlert to sounds."},
-  {file:"purrloin", name:"Purrloin", dex:509, trainer:"Chels", details:"Hatched in Cafe\nafter 4391 encounters\nLikes Spicy food.\nDislikes Dry food.\nLikes to thrash about."},
-  {file:"mandibuzz", name:"Mandibuzz", dex:630, trainer:"Chels", details:"Met at lv. 46 in Village Bridge\nafter 2853 encounters\nLikes Sweet food.\nDislikes Dry food.\nLikes to thrash about."},
+  {
+    file: "girafarig",
+    name: "Girafarig",
+    dex: 203,
+    trainer: "Chels",
+    details: `Met at Iv. 24 in Route 43
+after 4210 encounters on 11/07/2025 22:27:13
+Likes Spicy food.
+Dislikes Dry food.
+Likes to thrash about.`
+  },
+  {
+    file: "mankey",
+    name: "Mankey",
+    dex: 56,
+    trainer: "Chels",
+    details: `Met at Iv. 21 in Route 42
+after 3562 encounters on 12/07/2025 23:20:40
+Likes Sour food.
+Dislikes Sweet food.
+Mischievous.`
+  },
+  {
+    file: "magikarp",
+    name: "Magikarp",
+    dex: 129,
+    trainer: "Chels",
+    details: `Met at Iv. 33 in Dragon's Den 
+on 10/06/2025 02:51:00
+Likes Sweet food.
+Dislikes Bitter food.
+Somewhat vain.`
+  },
+  {
+    file: "tailow",
+    name: "Tailow",
+    dex: 276,
+    trainer: "Chels",
+    details: `Chico! A gift from Tuna because he’s so sweet ♡`
+  },
+  {
+    file: "dunsparce",
+    name: "Dunsparce",
+    dex: 206,
+    trainer: "Chels",
+    details: `Met at Iv. 46 in THREE ISLE PORT
+after 74128 encounters on 14/08/2025 14:11:24
+Likes Dry food.
+Dislikes Sour food.
+Capable of taking hits.`
+  },
+  {
+    file: "lotad",
+    name: "Lotad",
+    dex: 270,
+    trainer: "Chels",
+    details: `Met at Iv. 15 in ROUTE 114
+after 21276 encounters on 21/08/2025 01:43:36
+Likes Dry food.
+Dislikes Spicy food.
+Alert to sounds.`
+  },
 
   // Tuna
-    {
+  {
     file: "lilligant",
     name: "Lilligant",
     dex: 549,
@@ -373,70 +417,73 @@ Likes to thrash about.
 
 Hidden Ability unlocked.`
   },
-  
+];
+
+function getFrontSpriteUrl(poke){
+  if(poke.file === 'tailow'){
+    return 'https://projectpokemon.org/images/shiny-sprite/taillow.gif';
+  }
+  if(poke.file === 'dunsparce'){
+    return 'https://img.pokemondb.net/sprites/black-white/anim/shiny/dunsparce.gif';
+  }
+  return `https://img.pokemondb.net/sprites/black-white/anim/shiny/${poke.file}.gif`;
+}
 
 function buildTrainerGrid(trainerName, containerId, countId){
   const container = document.getElementById(containerId);
   const countEl = document.getElementById(countId);
-  const filtered = shinies.filter(p => p.trainer===trainerName);
+  const filtered = shinies.filter(p => p.trainer === trainerName);
   countEl.textContent = `ShinyDex: ${filtered.length}`;
-  filtered.sort((a,b)=>a.dex-b.dex);
+  filtered.sort((a,b) => a.dex - b.dex);
+
   container.innerHTML = '';
 
   filtered.forEach(p=>{
     const card = document.createElement('button');
-    card.className='poke-card';
-    card.type='button';
+    card.className = 'poke-card';
     card.setAttribute('aria-label', `${p.name} #${p.dex} caught by ${p.trainer}`);
+    card.type = 'button';
 
     const num = document.createElement('div');
-    num.className='dexnum';
-    num.textContent=`#${String(p.dex).padStart(3,'0')}`;
-
-    const img = document.createElement('img');
-    img.className='sprite';
-    img.alt=`${p.name} shiny sprite`;
-    const file = fileNameFor(p);
-    setSpriteWithFallback(img, file);
+    num.className = 'dexnum';
+    num.textContent = `#${String(p.dex).padStart(3,'0')}`;
 
     const name = document.createElement('div');
-    name.className='pokename';
-    name.textContent=p.name;
+    name.className = 'pokename';
+    name.textContent = p.name;
 
-    if(p.icons){
-      p.icons.forEach(icon=>{
-        const iconEl=document.createElement('img');
-        iconEl.className='icon';
-        iconEl.src=icon;
-        name.appendChild(iconEl);
-      });
-    }
+    const img = document.createElement('img');
+    img.className = 'sprite';
+    img.src = getFrontSpriteUrl(p);
+    img.alt = `${p.name} shiny sprite`;
 
     card.appendChild(num);
     card.appendChild(img);
     card.appendChild(name);
     container.appendChild(card);
 
-    card.addEventListener('mouseenter',()=>updateInfoPanel(p));
-    card.addEventListener('focus',()=>updateInfoPanel(p));
+    card.addEventListener('mouseenter', () => updateInfoPanel(p));
+    card.addEventListener('focus', () => updateInfoPanel(p));
   });
 }
 
-function updateInfoPanel(p){
-  const file = fileNameFor(p);
-  const imgEl = document.getElementById('info-sprite');
-  setSpriteWithFallback(imgEl, file);
-  imgEl.alt = `${p.name} shiny sprite`;
+function updateInfoPanel(poke){
+  const infoSprite = document.getElementById('info-sprite');
+  const infoName = document.getElementById('info-name');
+  const infoNum = document.getElementById('info-num');
+  const infoTrainer = document.getElementById('info-trainer');
+  const infoDetails = document.getElementById('info-details');
 
-  document.getElementById('info-name').textContent=p.name;
-  document.getElementById('info-num').textContent=`#${String(p.dex).padStart(3,'0')}`;
-  document.getElementById('info-trainer').textContent=`Trainer: ${p.trainer}`;
-  document.getElementById('info-details').textContent=p.details||"No additional info available";
+  infoSprite.src = getFrontSpriteUrl(poke);
+  infoSprite.alt = `${poke.name} shiny sprite`;
+  infoName.textContent = poke.name;
+  infoNum.textContent = `#${String(poke.dex).padStart(3,'0')}`;
+  infoTrainer.textContent = `Trainer: ${poke.trainer}`;
+  infoDetails.textContent = poke.details || "No additional info available";
 }
 
-["Chels","Tuna","Muted","Autistic"].forEach(name=>{
-  buildTrainerGrid(name,name.toLowerCase()+"-grid",name.toLowerCase()+"-shiny-count");
-});
+buildTrainerGrid('Chels', 'chels-grid', 'chels-shiny-count');
+buildTrainerGrid('Tuna', 'tuna-grid', 'tuna-shiny-count');
 </script>
 </body>
 </html>
