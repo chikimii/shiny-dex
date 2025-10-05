@@ -271,7 +271,7 @@ Likes Dry food.
 Dislikes Spicy food.
 Alert to sounds.`
   },
-  // Purrloin (new, exact info provided)
+  // Purrloin (user-provided)
   {
     file: "purrloin",
     name: "Purrloin",
@@ -284,7 +284,7 @@ Likes Spicy Food.
 Dislikes Dry Food.
 Likes to thrash about.`
   },
-  // Mandibuzz (new, exact info provided)
+  // Mandibuzz (user-provided)
   {
     file: "mandibuzz",
     name: "Mandibuzz",
@@ -386,8 +386,7 @@ Often dozes off.`
     dex: 623,
     trainer: "Tuna",
     details: `Met at Iv. 29 in Dragonspiral Tower
-after 7205 encounters on
-7/11/25 7:44:35 PM
+after 7205 encounters on 7/11/25 7:44:35 PM
 Likes Bitter food.
 Dislikes Sweet food.
 Often dozes off.
@@ -454,7 +453,7 @@ Likes to thrash about.
 
 Hidden Ability unlocked.`
   },
-  // Ponyta (new, exact info provided)
+  // Ponyta (added earlier)
   {
     file: "ponyta",
     name: "Ponyta",
@@ -469,27 +468,30 @@ No flavor preferences.
 Mischievous.
 Hidden Ability unlocked.`
   },
+  // Mienshao (new, user-provided)
   {
-    file: "Mienshao",
+    file: "mienshao",
     name: "Mienshao",
-    <img src="https://img.pokemondb.net/sprites/black-white/shiny/mienshao.png" alt="Shiny Mienshao">
     dex: 620,
     trainer: "Tuna",
-    details: `Met at lv.37 in Victory Road 
-    after 8555 encounters on 
-    05/10/2025 02:55:16 
-    No flavor preferences. 
-    Capable of taking hits.`
+    details: `Met at lv.37 in Victory Road
+after 8555 encounters on
+05/10/2025 02:55:16
+
+No flavor preferences.
+Capable of taking hits.`
   },
 ];
 
 function getFrontSpriteUrl(poke){
+  // preserve the special-case tailow and dunsparce used previously
   if(poke.file === 'tailow'){
     return 'https://projectpokemon.org/images/shiny-sprite/taillow.gif';
   }
   if(poke.file === 'dunsparce'){
     return 'https://img.pokemondb.net/sprites/black-white/anim/shiny/dunsparce.gif';
   }
+  // animated Gen5-style shiny GIF from Pokemondb (black-white anim)
   return `https://img.pokemondb.net/sprites/black-white/anim/shiny/${poke.file}.gif`;
 }
 
@@ -546,6 +548,7 @@ function updateInfoPanel(poke){
   infoDetails.textContent = poke.details || "No additional info available";
 }
 
+// Initialize
 buildTrainerGrid('Chels', 'chels-grid', 'chels-shiny-count');
 buildTrainerGrid('Tuna', 'tuna-grid', 'tuna-shiny-count');
 </script>
